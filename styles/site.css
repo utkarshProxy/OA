@@ -1,0 +1,603 @@
+/* ==========================================================================
+   OBOU Automations — page styles
+   Every rule the prototype carried as a style="" attribute lives here instead,
+   so the page ships under a CSP with no 'unsafe-inline'.
+   ========================================================================== */
+
+/* --- Skip link ----------------------------------------------------------- */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 14px 20px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.skip-link:focus {
+  left: 0;
+  color: var(--color-paper);
+}
+
+/* --- Header / nav -------------------------------------------------------- */
+
+.site-header {
+  border-bottom: 2px solid var(--color-divider);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  /* padding-block only: a `padding` shorthand here would reset the inline
+     gutters .wrap sets on this same element. */
+  padding-block: 22px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.brand__mark {
+  width: 34px;
+  height: 34px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* padding-block lifts these 19px text links to a >=24px tall hit target
+   (WCAG 2.2 AA, 2.5.8 Target Size Minimum) without moving anything visually. */
+.obo-link {
+  display: inline-block;
+  padding-block: 4px;
+  transition: color 0.15s;
+}
+
+.obo-link:hover {
+  color: var(--color-accent);
+}
+
+.nav-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-divider);
+  white-space: nowrap;
+  margin: 0;
+}
+
+.nav-badge__dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-accent);
+  display: inline-block;
+  flex: none;
+}
+
+/* --- Hero ---------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  padding: 136px 0 160px;
+  border-bottom: 2px solid var(--color-divider);
+  overflow: hidden;
+}
+
+.obo-ascii {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.75) 28%,
+    #000 48%,
+    #000
+  );
+  mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.75) 28%,
+    #000 48%,
+    #000
+  );
+}
+
+.hero__wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.hero__col {
+  position: relative;
+  max-width: 680px;
+}
+
+/* Paper-coloured radial scrim, blurred, sitting behind the text column only —
+   keeps the headline readable over the glyph field without softening the
+   empty right-hand side of the hero. */
+.hero__scrim {
+  position: absolute;
+  z-index: -1;
+  inset: -10% -8%;
+  background: radial-gradient(
+    ellipse at 38% 42%,
+    var(--color-paper) 0%,
+    rgba(249, 244, 235, 0.9) 55%,
+    rgba(249, 244, 235, 0) 82%
+  );
+  filter: blur(26px);
+}
+
+/* The two tweakables from the handoff. Defaults: shadow 0.45, tracking
+   offset 0.025em on top of the base -0.08em. Both are driven from the custom
+   properties below so they can be set from config rather than edited here. */
+.hero__title {
+  --h1-shadow-intensity: 0.45;
+  --h1-letter-spacing-offset: 0.025em;
+  max-width: 16ch;
+  margin: 0 0 32px;
+  font-size: clamp(36px, 4.8vw, 64px);
+  line-height: 1.05;
+  letter-spacing: calc(-0.08em + var(--h1-letter-spacing-offset));
+  text-shadow: 0 calc(var(--h1-shadow-intensity) * 14px)
+    calc(var(--h1-shadow-intensity) * 34px)
+    rgba(107, 102, 92, calc(var(--h1-shadow-intensity) * 0.55));
+}
+
+.hero__line {
+  display: block;
+}
+
+.hero__lede {
+  max-width: 640px;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--color-neutral-700);
+  margin: 0 0 40px;
+}
+
+.hero__cta-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.hero__note {
+  max-width: 260px;
+  line-height: 1.4;
+}
+
+.hero__note strong {
+  color: var(--color-ink);
+}
+
+/* --- Shared section intro ------------------------------------------------ */
+
+.section-intro {
+  max-width: 680px;
+  margin: 0 0 56px;
+}
+
+.section-intro .t-h2-sm {
+  margin: 0 0 20px;
+}
+
+.section-intro__body {
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-neutral-700);
+  margin: 0;
+}
+
+.section-dark .section-intro__body {
+  color: var(--color-neutral-300);
+}
+
+/* --- Services ------------------------------------------------------------ */
+
+.services {
+  padding: 152px 0;
+}
+
+/* Ruled grids: the 2px gap IS the rule — the grid's own background shows
+   through between cards. */
+.obo-svc-grid,
+.obo-price-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--color-divider);
+  border: 2px solid var(--color-divider);
+}
+
+.obo-svc-grid > * {
+  background: var(--color-bg);
+}
+
+.obo-price-grid > * {
+  background: #1c1c1e;
+}
+
+.obo-service {
+  padding: 32px;
+  min-height: 250px;
+  transition: background-color 0.15s;
+}
+
+.obo-service:hover {
+  background: var(--color-neutral-100);
+}
+
+.obo-service .t-label {
+  color: var(--color-accent-700);
+}
+
+.obo-service .t-h3 {
+  margin: 18px 0 12px;
+}
+
+.services__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+.services__cta .btn-ghost {
+  border: 1px solid var(--color-accent);
+}
+
+/* --- Pricing ------------------------------------------------------------- */
+
+.pricing {
+  padding: 152px 0;
+}
+
+.price-card {
+  padding: 32px;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+}
+
+.price-card .t-label {
+  color: var(--color-neutral-300);
+}
+
+.price-card__title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 20px 0 14px;
+}
+
+.price-card__body {
+  line-height: 1.55;
+  color: var(--color-neutral-300);
+  margin: 0 0 24px;
+}
+
+.price-card__foot {
+  margin-top: auto;
+}
+
+.price-card__note {
+  color: var(--color-neutral-500);
+  margin: 0 0 4px;
+}
+
+.price-card__price {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0 0 20px;
+}
+
+/* Highlighted card: solid acid yellow, all text flipped to ink. */
+.price-card--featured {
+  background: var(--color-accent-2);
+}
+
+.obo-price-grid > .price-card--featured {
+  background: var(--color-accent-2);
+}
+
+.price-card--featured .t-label,
+.price-card--featured .price-card__title,
+.price-card--featured .price-card__body,
+.price-card--featured .price-card__price {
+  color: var(--color-ink);
+}
+
+.price-card--featured .price-card__note {
+  color: var(--color-ink);
+  opacity: 0.65;
+}
+
+/* Overridden to signal orange so the button still reads against the yellow. */
+.price-card--featured .btn-primary {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
+
+.price-card--featured .btn-primary:hover {
+  background: var(--color-accent-600);
+}
+
+.price-card--featured .btn-primary:active {
+  background: var(--color-accent-700);
+}
+
+/* --- Process banner ------------------------------------------------------ */
+
+.process {
+  padding: 132px 0;
+}
+
+.process__box {
+  display: grid;
+  grid-template-columns: 1.6fr auto;
+  gap: 48px;
+  align-items: center;
+  border: 2px solid var(--color-divider);
+  padding: 48px;
+}
+
+.process__box .t-h2-sm {
+  margin: 0 0 16px;
+}
+
+.process__body {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-neutral-700);
+  margin: 0;
+}
+
+.process__cta {
+  white-space: nowrap;
+}
+
+/* --- Quote strip --------------------------------------------------------- */
+
+.quote {
+  padding: 100px 0;
+}
+
+.quote__wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.quote__text {
+  max-width: 760px;
+  margin: 0;
+}
+
+.quote__cta {
+  white-space: nowrap;
+  border: 1px solid var(--color-neutral-300);
+  /* Explicitly paper — --color-text resolves to paper here too, but pinning
+     it guards the label if this button is ever moved onto a light ground. */
+  color: var(--color-paper);
+}
+
+.quote__cta:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* --- Accent poster CTA --------------------------------------------------- */
+
+.poster {
+  padding: 160px 0;
+  background: var(--color-accent);
+}
+
+.poster__wrap {
+  text-align: left;
+}
+
+.poster .t-label,
+.poster .t-h2,
+.poster__body {
+  color: var(--color-ink);
+}
+
+.poster .t-h2 {
+  max-width: 16ch;
+  margin: 0 0 24px;
+}
+
+.poster__body {
+  font-weight: 400;
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 0 32px;
+}
+
+/* Direct visual-editor override from the handoff — not the system default
+   primary button. Values are pinned exactly as specified. */
+.poster__cta {
+  color: var(--color-accent-3);
+  background-color: var(--color-accent-2-500);
+  border-width: 2px;
+  border-style: dotted;
+  border-color: var(--color-accent-3-400);
+}
+
+.poster__cta:hover {
+  background-color: var(--color-accent-3-600);
+  color: var(--color-paper);
+  border-color: var(--color-accent-3-600);
+}
+
+.poster__cta:active {
+  background-color: var(--color-accent-3-700);
+  color: var(--color-paper);
+  border-color: var(--color-accent-3-700);
+}
+
+/* --- Footer -------------------------------------------------------------- */
+
+.site-footer {
+  padding: 100px 0 48px;
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 56px;
+  padding-bottom: 56px;
+  border-bottom: 2px solid var(--color-divider);
+}
+
+.footer__wordmark {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  align-self: start;
+}
+
+.footer__grid .t-label {
+  color: var(--color-accent-2);
+}
+
+.footer__note {
+  line-height: 1.65;
+  color: var(--color-neutral-300);
+  margin: 0;
+}
+
+.footer__links {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+}
+
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 24px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footer__bottom .t-micro {
+  color: var(--color-neutral-500);
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 980px) {
+  .site-nav {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .nav-badge {
+    order: 2;
+  }
+
+  .nav-links {
+    order: 3;
+    width: 100%;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .process__box {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 36px;
+  }
+
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 860px) {
+  .obo-svc-grid,
+  .obo-price-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .nav-links {
+    gap: 16px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+}
+
+@media (max-width: 680px) {
+  .obo-ascii {
+    opacity: 0.55;
+  }
+
+  .hero {
+    padding: 88px 0 96px;
+  }
+
+  .services,
+  .pricing {
+    padding: 96px 0;
+  }
+
+  .process {
+    padding: 80px 0;
+  }
+
+  .quote,
+  .poster {
+    padding: 80px 0;
+  }
+
+  .site-footer {
+    padding: 72px 0 40px;
+  }
+
+  .hero__cta-row .btn,
+  .process__cta,
+  .quote__cta {
+    width: 100%;
+  }
+}
