@@ -333,24 +333,25 @@ a:hover {
   width: 100%;
 }
 
-/* Known WCAG AA failure, carried over from the source design on purpose:
-   paper on signal orange is 2.86:1, under the 4.5:1 minimum for 13px text.
-   The handoff marks colours as final, so the design is reproduced as drawn.
-   Flipping the label to ink takes it to 6.02:1 and passes -- uncomment the
-   override below to adopt that. See QA-REPORT.md. */
+/* The label is ink rather than the handoff's paper. Paper on signal orange is
+   2.86:1, under the 4.5:1 WCAG AA minimum for this 13px text; ink reaches
+   6.02:1. This is a deliberate, signed-off departure from the handoff's
+   "colours are final" -- the fill stays exactly as designed. See QA-REPORT.md. */
 .btn-primary {
   background: var(--color-accent);
-  color: var(--color-paper);
-  /* color: var(--color-ink); */
+  color: var(--color-ink);
 }
 
 .btn-primary:hover {
   background: var(--color-accent-600);
-  color: var(--color-paper);
+  color: var(--color-ink);
 }
 
+/* accent-700 is dark enough that the ramp flips: ink drops to 3.54:1 there
+   while paper reaches 4.86:1. Pressed states keep paper for that reason. */
 .btn-primary:active {
   background: var(--color-accent-700);
+  color: var(--color-paper);
 }
 
 .btn-secondary {
@@ -362,12 +363,13 @@ a:hover {
 .btn-secondary:hover {
   background: var(--color-accent);
   border-color: var(--color-accent);
-  color: var(--color-paper);
+  color: var(--color-ink);
 }
 
 .btn-secondary:active {
   background: var(--color-accent-700);
   border-color: var(--color-accent-700);
+  color: var(--color-paper);
 }
 
 .btn-ghost {

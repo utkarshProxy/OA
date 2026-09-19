@@ -347,15 +347,17 @@
 /* Overridden to signal orange so the button still reads against the yellow. */
 .price-card--featured .btn-primary {
   background: var(--color-accent);
-  color: var(--color-paper);
+  color: var(--color-ink);
 }
 
 .price-card--featured .btn-primary:hover {
   background: var(--color-accent-600);
+  color: var(--color-ink);
 }
 
 .price-card--featured .btn-primary:active {
   background: var(--color-accent-700);
+  color: var(--color-paper);
 }
 
 /* --- Process banner ------------------------------------------------------ */

@@ -84,13 +84,12 @@ inlined, so any script inside an SVG would not execute in the page's context —
 provenance manifest, which is inert metadata; it was left intact rather than
 stripped so the asset's provenance chain stays verifiable.
 
-## Known accepted risk
+## Accessibility
 
-`.btn-primary` renders paper text on signal orange at **2.86:1**, under the
-4.5:1 WCAG AA minimum for 13px text. This is reproduced from the source design,
-which marks colours as final. It is an accessibility defect, not a security
-one, and the one-line fix is commented in `styles/design-system.css`. See
-`QA-REPORT.md`.
+Not a security property, but tracked in the same place: every filled-button
+state now clears WCAG AA contrast. The primary button's label was moved from
+paper to ink (2.86:1 to 6.02:1) as a deliberate departure from the handoff's
+"colours are final"; the fill is unchanged. See `QA-REPORT.md`.
 
 ## Reporting
 

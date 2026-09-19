@@ -45,6 +45,21 @@ compensate, so the rendered spacing is unchanged. Now zero elements under 24px.
 load. Removed from the meta tag; it remains in the response headers, where it
 works, alongside `X-Frame-Options: DENY`.
 
+### 6. Filled orange buttons failed AA — fixed
+
+`.btn-primary` rendered paper text on signal orange at **2.86:1**, against a
+4.5:1 requirement for its 13px label. This affected the hero CTA, the process
+banner CTA and "Choose a quick win". `.btn-secondary:hover`, which fills with
+the same orange, had the same problem.
+
+The handoff marks colours as final, so this was raised rather than changed
+silently, and then fixed on your call. Labels are now ink: **6.02:1**. The
+orange fill is untouched.
+
+The pressed state needed the opposite treatment. On `accent-700` (`#c9302e`)
+the ramp flips — ink falls to 3.54:1 while paper reaches 4.86:1 — so `:active`
+keeps a paper label. Every state of every filled button now clears AA.
+
 ## Verified working
 
 | Check | Result |
@@ -90,21 +105,11 @@ All WCAG AA (4.5:1 for normal text) unless noted.
 | Footer eyebrow — acid yellow on ink | 15.48 | pass |
 | Poster CTA — accent-3 on acid yellow | 4.65 | pass (was 4.27) |
 | Poster CTA hover — paper on accent-3-600 | 6.42 | pass |
-| **Primary button — paper on signal orange** | **2.86** | **fail** |
-
-## Open issue: primary button contrast
-
-`.btn-primary` is paper text on signal orange at 2.86:1, against a 4.5:1
-requirement for its 13px label. This affects the hero CTA, the process banner
-CTA and the "Choose a quick win" button.
-
-It was **not** changed, because the handoff marks colours as final and this is
-the design system's own primary button — repainting it is a brand decision, not
-a QA fix. Flipping the label from paper to ink takes it to **6.02:1** and
-passes, with no other change; the override is sitting commented out in
-`styles/design-system.css` under `.btn-primary`.
-
-Your call. Say the word and it is a one-line change.
+| Primary button — ink on signal orange | 6.02 | pass (was 2.86 with paper) |
+| Primary button hover — ink on accent-600 | 4.70 | pass |
+| Primary button pressed — paper on accent-700 | 4.86 | pass |
+| Secondary button hover — ink on signal orange | 6.02 | pass (was 2.86) |
+| Secondary button pressed — paper on accent-700 | 4.86 | pass |
 
 ## Not covered
 
