@@ -69,7 +69,8 @@ keeps a paper label. Every state of every filled button now clears AA.
 | Third-party network requests | **0** — all 56 requests same-origin |
 | `style` attributes in the page | 0 |
 | Inline `<script>` elements | 0 |
-| External link hardening | `rel="noopener noreferrer"`, `target="_blank"` |
+| External link hardening | all 7 booking links `target="_blank" rel="noopener noreferrer"` |
+| External hosts | 1 — `calendar.app.google` |
 | Anchor targets resolve | `#main` `#home` `#services` `#pricing` `#contact` all present |
 | Heading structure | one `h1`, then `h2`/`h3` in order, no skipped levels |
 | Landmarks | 1 `header`, 1 `main`, 1 `footer`, 2 labelled `nav` |

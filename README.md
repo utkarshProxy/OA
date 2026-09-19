@@ -79,16 +79,24 @@ Archivo is self-hosted rather than loaded from Google Fonts. That keeps the
 site free of third-party requests, which is what lets the CSP stay at
 `default-src 'none'`. Licence in `assets/fonts/OFL.txt`.
 
-## Two things to decide before launch
+## Contact
 
-1. **`assets/logo.svg` is a red cartoon blob mascot.** That is the asset the
-   handoff shipped, so it is used as-is, but it does not match the Swiss
-   modernist system around it. Worth a look before this goes public.
-2. **Contact details are placeholders.** The footer says the business email and
-   booking link "will be added before public launch", and the only real
-   destination on the page is the Google Calendar booking link on the poster
-   CTA. The nav's "Contact" anchor scrolls to the footer rather than to contact
-   details.
+The Google Calendar booking link is the site's only contact destination, by
+decision:
+
+```
+https://calendar.app.google/BovBGfzf4FPaK53v7
+```
+
+It is used by the poster CTA, the three pricing buttons, the process banner,
+the quote strip and the footer's "Book a call" link — seven links, all
+`target="_blank" rel="noopener noreferrer"`. The nav and footer "Contact"
+entries stay in-page anchors, because they are navigation; they scroll to the
+footer, which now carries the booking link.
+
+To swap in an email address or a different booking tool later, grep
+`index.html` for `calendar.app.google` — there is a comment in `<head>` marking
+the URL as the single thing to change.
 
 ## Deploying
 

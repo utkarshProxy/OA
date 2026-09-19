@@ -67,10 +67,12 @@ production server, and should never be exposed.
 
 ## Outbound links
 
-The page has exactly one external destination, the Google Calendar booking link
-on the poster CTA. It carries `rel="noopener noreferrer"` so the opened tab
-cannot reach back through `window.opener` and no referrer leaks, and it is the
-only URL on the page that is not a same-page anchor.
+The page has exactly one external destination — the Google Calendar booking
+link, which is the site's contact method and is reached from seven links. Every
+one carries `target="_blank" rel="noopener noreferrer"`, so the opened tab
+cannot reach back through `window.opener` and no referrer leaks. Apart from
+same-page anchors, no other URL appears on the page; `calendar.app.google` is
+the only external host.
 
 ## Supply chain
 
@@ -93,5 +95,5 @@ paper to ink (2.86:1 to 6.02:1) as a deliberate departure from the handoff's
 
 ## Reporting
 
-Add a contact address here before public launch — the footer currently says
-contact details are still to come.
+There is no security contact address yet. Until one exists, report anything
+through the booking link in the footer.
