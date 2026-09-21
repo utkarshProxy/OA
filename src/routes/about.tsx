@@ -1,0 +1,12 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { FinalCTA, PageFrame, PageHero, SectionIntro } from "@/components/site";
+
+export const Route = createFileRoute("/about")({
+  head: () => ({ meta: [
+    { title: "About — OBOU Automations - AI agents implementation - Automate Daily Tasks - AI Implementation for Business - Get More Done Faster" }, { name: "description", content: "Implement AI agents that handle 80% of the repetitive ops in a small business" },
+    { property: "og:title", content: "About — OBOU Automations - AI agents implementation - Automate Daily Tasks - AI Implementation for Business - Get More Done Faster" }, { property: "og:description", content: "Implement AI agents that handle 80% of the repetitive ops in a small business" }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
+  ]}), component: AboutPage,
+});
+function AboutPage(){return <PageFrame><PageHero eyebrow="About" title="AI knowledge, grounded in actual work." copy="OBOU helps growing companies install reliable AI without hiring an internal engineering team or buying into a giant transformation programme." />
+  <section className="manifesto section-dark"><div className="wrap manifesto-grid"><SectionIntro dark eyebrow="Our point of view" title="Practical AI. Better work."/><div className="manifesto-copy"><p>If someone on your team does the same thing every Monday, there is probably a better way.</p><p>Your best people should not spend their afternoon moving information between tabs.</p><p>AI is getting very good at the parts of work nobody particularly enjoys. The useful question is where to apply it—and how to make it dependable.</p></div></div></section>
+  <section className="human-loop section-light"><div className="wrap"><SectionIntro eyebrow="Human in the loop" title="Automation should support judgment, not pretend it doesn't exist."/><div className="responsibility-grid"><div><p className="t-label">AI is excellent at</p>{["Research","Classification","Summarisation","Drafting","Extraction","Routing","Pattern recognition"].map(x=><span key={x}>{x}</span>)}</div><div><p className="t-label">Humans remain responsible for</p>{["Judgment","Relationships","Sensitive decisions","Exceptions","Approvals"].map(x=><span key={x}>{x}</span>)}</div></div><div className="philosophy-flow"><b>AI does the prep</b><i>↓</i><b>Human makes the call</b><i>↓</i><b>System does the admin</b></div></div></section><FinalCTA /></PageFrame>}
