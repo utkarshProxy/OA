@@ -1,0 +1,72 @@
+OBOU Automations — response header policy
+=========================================
+
+This is the canonical policy. Five places express it, and they must agree:
+
+  src/lib/security-headers.ts   applied by the SSR handler to every response it
+                                renders (the authoritative one — it travels with
+                                the app to any host)
+  _headers                      Netlify / Cloudflare Pages
+  security-headers/vercel.json  Vercel
+  security-headers/nginx.conf   nginx
+  security-headers/apache.htaccess  Apache
+
+Content-Security-Policy
+  default-src 'none'
+  script-src  'self' 'unsafe-inline'
+  style-src   'self' 'unsafe-inline'
+  img-src     'self' data:
+  font-src    'self'
+  connect-src 'self'
+  form-action 'none'
+  frame-ancestors 'none'
+  base-uri 'none'
+  object-src 'none'
+  upgrade-insecure-requests
+
+Strict-Transport-Security   max-age=63072000; includeSubDomains; preload
+X-Content-Type-Options      nosniff
+X-Frame-Options             DENY
+Referrer-Policy             strict-origin-when-cross-origin
+Permissions-Policy          accelerometer=(), camera=(), geolocation=(),
+                            gyroscope=(), magnetometer=(), microphone=(),
+                            payment=(), usb=(), interest-cohort=()
+Cross-Origin-Opener-Policy      same-origin
+Cross-Origin-Resource-Policy    same-origin
+Cross-Origin-Embedder-Policy    require-corp
+
+Cache-Control  public, max-age=31536000, immutable
+               on /assets/fonts/* and /_build/* (content-hashed build output)
+
+Why it differs from the static site's policy
+--------------------------------------------
+The pre-rewrite static site ran on `default-src 'none'` with no inline anything,
+no network and no third-party requests. The React rewrite loosens three
+directives and nothing else:
+
+  script-src 'unsafe-inline'  TanStack Start emits an inline hydration script
+                              next to <Scripts />. Tightening this means a
+                              per-request nonce threaded through the SSR handler
+                              and the script tags; Start does not expose that
+                              today. Revisit when it does.
+  style-src 'unsafe-inline'   Vite and React inject style elements at runtime.
+  connect-src 'self'          The router prefetches route data and server
+                              functions post back to this origin. 'none' breaks
+                              client-side navigation.
+
+Everything the page loads — fonts, logo, favicon, JS, CSS — is same-origin.
+There are no third-party requests, so no host allowlist is needed anywhere.
+
+form-action stays 'none' because no form on the site submits: the contact form
+and the opportunity finder both call preventDefault(). Wiring either one to a
+real endpoint means widening this to 'self' or to the handler's origin, in all
+five files, in the same commit.
+
+Deploying
+---------
+Serve over HTTPS; Strict-Transport-Security and upgrade-insecure-requests assume
+it. Cloudflare Workers (the build's default Nitro target) needs no extra config —
+the SSR handler sets the headers. Static-asset hosts want the matching file above.
+
+Verify after deploy:
+  curl -sI https://obouautomations.com | grep -i -E 'content-security|strict-transport|x-frame'
