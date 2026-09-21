@@ -1,5 +1,14 @@
+# Netlify / Cloudflare Pages response headers.
+#
+# This app renders HTML on the server, and src/lib/security-headers.ts applies the
+# same policy to every response it produces. This file is the belt to that's braces:
+# it covers static assets served straight off the CDN without touching the handler,
+# and hosts that serve a prerendered build.
+#
+# Keep the policy here identical to src/lib/security-headers.ts.
+
 /*
-  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
@@ -10,4 +19,7 @@
   Cross-Origin-Embedder-Policy: require-corp
 
 /assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/_build/*
   Cache-Control: public, max-age=31536000, immutable
