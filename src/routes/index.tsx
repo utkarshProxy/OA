@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Bell, DollarSign, FileBarChart, Share2, Users } from "lucide-react";
 import { OpportunityFinder } from "@/components/opportunity-finder";
-import { Eyebrow, FinalCTA, Flow, PageFrame, PrimaryLink, SectionIntro } from "@/components/site";
-import { solutions } from "@/lib/site-content";
+import { Eyebrow, FinalCTA, PageFrame, PrimaryLink, SectionIntro } from "@/components/site";
+import { SolutionTabs } from "@/components/solution-showcase";
 import canvaLogo from "@/assets/tool-logos/canva.svg.asset.json";
 import chatgptLogo from "@/assets/tool-logos/chatgpt.svg.asset.json";
 import claudeLogo from "@/assets/tool-logos/claude.svg.asset.json";
@@ -59,7 +59,7 @@ function AutomationTaskList(){return <div className="automation-run">{automation
 
 function Story(){return <section className="story-strip section-dark"><div className="wrap automation-showcase"><div className="automation-demo"><div className="automation-demo-label"><span className="t-label">Live workflow queue</span><span><i/>5 systems active</span></div><div className="automation-window" aria-label="Examples of business workflows OBOU can automate"><div className="automation-track"><AutomationTaskList/><div aria-hidden="true"><AutomationTaskList/></div></div><div className="automation-fade automation-fade-top"/><div className="automation-fade automation-fade-bottom"/></div><div className="automation-demo-footer"><span>OBOU / AUTOMATION LAYER</span><b>RUNNING</b></div></div><div className="automation-copy"><Eyebrow>Workflow automation</Eyebrow><h2>Automate repetitive tasks. <span>Keep your team focused on the decisions that matter.</span></h2><p>We streamline day-to-day operations with dependable AI automation—from payroll and reporting to employee insights and smart notifications. Reduce human error, save time, and scale without adding more admin.</p><div className="automation-tags"><span>AI task agents</span><span>100+ automations</span><span>Built to scale</span></div><div className="automation-proof"><b>One connected system</b><span>that works across the tools your team already uses.</span></div></div></div></section>}
 
-function Solutions(){return <section id="solutions" className="home-solutions section-light"><div className="wrap"><SectionIntro eyebrow="What we install" title="Start with the part of the business that needs help most." copy="Five practical systems solve the problems growing teams feel every day. Start with one focused workflow, or connect several into a complete system."/><div className="solution-grid">{solutions.map(s=><article key={s.slug}><p className="t-label">{s.number} / {s.label}</p><h3>{s.title}</h3><p>{s.summary}</p><Flow compact steps={s.flow}/><Link to="/solutions" hash={s.slug}>Explore {s.label.toLowerCase()} systems <ArrowRight size={14}/></Link></article>)}</div></div></section>}
+function Solutions(){return <section id="solutions" className="home-solutions section-light"><div className="wrap"><SectionIntro eyebrow="What we install" title="AI systems for the work that eats your week." copy="Pick the one that hurts most. Each system is built around your tools, your rules and a human who makes the final call."/><SolutionTabs/></div></section>}
 
 const today=["New inquiry","Someone notices it","Research in four tabs","Check CRM","Write reply","Update CRM","Create follow-up","Hopefully remember later"];
 const obou=["New inquiry","AI researches","AI qualifies","AI prepares response","Human reviews","System responds","CRM updates","Follow-up scheduled"];
