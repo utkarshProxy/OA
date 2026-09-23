@@ -27,7 +27,7 @@ export function SiteHeader() {
           <nav className="nav-links" aria-label="Primary navigation">
             {navItems.map(([label, to]) => <Link key={to} to={to} activeProps={{ className: "is-active" }} onClick={() => setOpen(false)}>{label}</Link>)}
           </nav>
-          <Link to="/contact" className="nav-cta" onClick={() => setOpen(false)}>Find your best AI opportunity <ArrowUpRight size={14} /></Link>
+          <Link to="/" hash="finder" className="nav-cta" onClick={() => setOpen(false)}>Find your best AI opportunity <ArrowUpRight size={14} /></Link>
         </div>
       </div>
     </header>
@@ -40,7 +40,7 @@ export function SiteFooter() {
       <div className="wrap footer-grid">
         <div><p className="brand footer-brand"><img src="/logo.svg" alt="" width="34" height="34" />OBOU Automations</p><p className="footer-line">Practical AI. Better work.</p></div>
         <div><p className="t-label">Explore</p>{navItems.map(([label, to]) => <Link key={to} to={to}>{label}</Link>)}</div>
-        <div><p className="t-label">Start</p><Link to="/contact">Find your opportunity ↗</Link><a href={BOOKING_URL} target="_blank" rel="noreferrer">Book a conversation ↗</a></div>
+        <div><p className="t-label">Start</p><Link to="/" hash="finder">Find your opportunity ↗</Link><a href={BOOKING_URL} target="_blank" rel="noreferrer">Book a conversation ↗</a></div>
       </div>
       <div className="wrap footer-bottom"><span>© 2026 OBOU Automations</span><span>Start with one workflow.</span></div>
     </footer>
@@ -55,8 +55,8 @@ export function SectionIntro({ eyebrow, title, copy, dark = false }: { eyebrow: 
   return <div className="section-intro"><Eyebrow>{eyebrow}</Eyebrow><h2 className="t-h2-sm">{title}</h2>{copy && <p className={`section-copy ${dark ? "on-dark" : ""}`}>{copy}</p>}</div>;
 }
 
-export function PrimaryLink({ to = "/contact", children }: { to?: "/contact" | "/solutions" | "/tools" | "/work" | "/how-to-start"; children: ReactNode }) {
-  return <Link to={to} className="btn btn-primary">{children}<ArrowUpRight size={15} /></Link>;
+export function PrimaryLink({ to = "/", children }: { to?: "/" | "/contact" | "/solutions" | "/tools" | "/work" | "/how-to-start"; children: ReactNode }) {
+  return <Link to={to} hash={to === "/" ? "finder" : undefined} className="btn btn-primary">{children}<ArrowUpRight size={15} /></Link>;
 }
 
 export function Flow({ steps, compact = false }: { steps: readonly string[]; compact?: boolean }) {
