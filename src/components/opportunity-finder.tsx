@@ -9,6 +9,34 @@ type AnswerId = "businessType" | "teamSize" | "operations" | "socialAndQueries" 
 type Answers = Partial<Record<AnswerId, string>>;
 
 const FINDER_CONFIG = {
+  copy: {
+    questionEyebrow: "Your workflow map",
+    resultEyebrow: "Your best AI opportunities",
+    progress: "Question {n} / {total}",
+    back: "Back",
+    skip: "Skip",
+    seeResults: "See my results",
+    startAgain: "Start again",
+    hoursCaption: "estimated hours saved / week",
+    hoursNote: "{FINDER_CONFIG.copy.hoursNote}",
+    impact: "Impact",
+    complexity: "Complexity",
+    customImpact: FINDER_CONFIG.copy.customImpact,
+    form: {
+      name: "Name",
+      email: "Email",
+      company: "Business name",
+      whatsapp: "WhatsApp number (optional)",
+      submit: "Get my full workflow map",
+      sending: "Sending...",
+      success: FINDER_CONFIG.copy.form.success,
+      error: FINDER_CONFIG.copy.form.error,
+      namePlaceholder: "Your name",
+      emailPlaceholder: "you@business.com",
+      companyPlaceholder: "Business name",
+      whatsappPlaceholder: "Optional",
+    },
+  },
   questions: [
     { id: "businessType", label: "What kind of business do you run?", options: [
       "Home services (plumbing, HVAC, cleaning, repairs)", "Clinic, salon or wellness", "Professional services (legal, accounting, real estate, insurance)", "Other small local business",
@@ -114,17 +142,17 @@ export function OpportunityFinder() {
 
   return <div className="finder-shell">
     {!done ? <>
-      <div className="finder-progress"><span>Question {step + 1} / {FINDER_CONFIG.questions.length}</span><span style={{ width: `${((step + 1) / FINDER_CONFIG.questions.length) * 100}%` }} /></div>
+      <div className="finder-progress"><span>{FINDER_CONFIG.copy.progress.replace("{n}", String(step + 1)).replace("{total}", String(FINDER_CONFIG.questions.length))}</span><span style={{ width: `${((step + 1) / FINDER_CONFIG.questions.length) * 100}%` }} /></div>
       <div className="finder-question" aria-live="polite">
-        <p className="t-label">Your workflow map</p>
+        <p className="t-label">{FINDER_CONFIG.copy.questionEyebrow}</p>
         <h3>{currentQuestion.label}</h3>
-        {"options" in currentQuestion ? <div className="finder-options">{currentQuestion.options.map((option, index) => <button type="button" key={option} onClick={() => choose(option)}><span>{option}</span><ArrowRight size={18} aria-hidden="true" /></button>)}</div> : <>
+        {"options" in currentQuestion ? <div className="finder-options">{currentQuestion.options.map((option) => <button type="button" key={option} onClick={() => choose(option)}><span>{option}</span><ArrowRight size={18} aria-hidden="true" /></button>)}</div> : <>
           <textarea rows={4} maxLength={1000} placeholder={currentQuestion.placeholder} value={answers.problem ?? ""} onChange={(event) => setAnswers({ ...answers, problem: event.target.value })} />
           <p className="finder-helper">{currentQuestion.helper}</p>
-          <div className="finder-question-actions"><button className="btn btn-primary" type="button" onClick={() => choose(answers.problem ?? "")}>See my results <ArrowRight size={15} /></button><button className="finder-back" type="button" onClick={() => choose("")}>Skip</button></div>
+          <div className="finder-question-actions"><button className="btn btn-primary" type="button" onClick={() => choose(answers.problem ?? "")}>{FINDER_CONFIG.copy.seeResults} <ArrowRight size={15} /></button><button className="finder-back" type="button" onClick={() => choose("")}>{FINDER_CONFIG.copy.skip}</button></div>
         </>}
       </div>
-      <button className="finder-back" type="button" disabled={step === 0} onClick={() => setStep(step - 1)}><ArrowLeft size={15} /> Back</button>
+      <button className="finder-back" type="button" disabled={step === 0} onClick={() => setStep(step - 1)}><ArrowLeft size={15} /> {FINDER_CONFIG.copy.back}</button>
     </> : <FinderResults answers={answers} onReset={reset} />}
   </div>;
 }
@@ -161,29 +189,29 @@ function FinderResults({ answers, onReset }: { answers: Answers; onReset: () => 
   }
 
   return <div className="finder-results">
-    <div className="results-head"><div><p className="t-label"><Check size={12} /> Your best AI opportunities</p><h3>{headline}</h3></div><div className="time-save"><strong>{hoursEstimate}</strong><span>estimated hours saved / week</span></div></div>
+    <div className="results-head"><div><p className="t-label"><Check size={12} /> {FINDER_CONFIG.copy.resultEyebrow}</p><h3>{headline}</h3></div><div className="time-save"><strong>{hoursEstimate}</strong><span>{FINDER_CONFIG.copy.hoursCaption}</span></div></div>
     <div className="result-table">{recommendations.map(({ slug, title, reason, score }, index) => <div className="result-row" key={slug}>
       <span>{String(index + 1).padStart(2, "0")}</span>
       <strong>{slug === "custom" ? <Link to="/contact">{title}</Link> : <Link to="/solutions" hash={slug}>{title}</Link>}</strong>
-      <span>Impact <b>{score >= 4 ? "High" : score >= 2 ? "Medium" : "To scope"}</b></span>
-      <span>Complexity <b>{answers.operations?.startsWith("In people's heads") || answers.operations?.startsWith("Spreadsheets") ? "Low" : "Medium"}</b></span>
+      <span>{FINDER_CONFIG.copy.impact} <b>{score >= 4 ? "High" : score >= 2 ? "Medium" : "To scope"}</b></span>
+      <span>{FINDER_CONFIG.copy.complexity} <b>{answers.operations?.startsWith("In people's heads") || answers.operations?.startsWith("Spreadsheets") ? "Low" : "Medium"}</b></span>
       <p className="result-reason">{reason}</p>
     </div>)}</div>
     <p className="finder-note">Estimates based on your answers. We confirm the real numbers in the audit.</p>
     <form className="capture-form" onSubmit={handleSubmit}>
-      <label>Name<input name="name" required maxLength={120} placeholder="Your name" /></label>
-      <label>Email<input name="email" type="email" required maxLength={254} placeholder="you@business.com" /></label>
-      <label>Business name<input name="company" required maxLength={120} placeholder="Business name" /></label>
-      <label>WhatsApp number (optional)<input name="whatsapp" type="tel" maxLength={30} placeholder="Optional" /></label>
+      <label>{FINDER_CONFIG.copy.form.name}<input name="name" required maxLength={120} placeholder={FINDER_CONFIG.copy.form.namePlaceholder} /></label>
+      <label>{FINDER_CONFIG.copy.form.email}<input name="email" type="email" required maxLength={254} placeholder={FINDER_CONFIG.copy.form.emailPlaceholder} /></label>
+      <label>{FINDER_CONFIG.copy.form.company}<input name="company" required maxLength={120} placeholder={FINDER_CONFIG.copy.form.companyPlaceholder} /></label>
+      <label>{FINDER_CONFIG.copy.form.whatsapp}<input name="whatsapp" type="tel" maxLength={30} placeholder={FINDER_CONFIG.copy.form.whatsappPlaceholder} /></label>
       <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" hidden />
       <button className="btn btn-primary" type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "Sending..." : "Get my full workflow map"} <ArrowRight size={15} aria-hidden="true" />
+        {status === "sending" ? FINDER_CONFIG.copy.form.sending : FINDER_CONFIG.copy.form.submit} <ArrowRight size={15} aria-hidden="true" />
       </button>
       <p className="form-status" role={status === "error" ? "alert" : "status"} aria-live="polite">
         {status === "success" && "Thanks! We'll email your workflow map within one business day."}
         {status === "error" && "Your answers could not be sent. Please try again."}
       </p>
     </form>
-    <button className="finder-back" type="button" onClick={onReset}><ArrowLeft size={15} /> Start again</button>
+    <button className="finder-back" type="button" onClick={onReset}><ArrowLeft size={15} /> {FINDER_CONFIG.copy.startAgain}</button>
   </div>;
 }
