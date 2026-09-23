@@ -165,7 +165,7 @@ function FinderResults({ answers, onReset }: { answers: Answers; onReset: () => 
     <div className="result-table">{recommendations.map(({ slug, title, reason, score }, index) => <div className="result-row" key={slug}>
       <span>{String(index + 1).padStart(2, "0")}</span>
       <strong>{slug === "custom" ? <Link to="/contact">{title}</Link> : <Link to="/solutions" hash={slug}>{title}</Link>}</strong>
-      <span>Impact <b>{score >= 4 ? "High" : "Medium"}</b></span>
+      <span>Impact <b>{score >= 4 ? "High" : score >= 2 ? "Medium" : "To scope"}</b></span>
       <span>Complexity <b>{answers.operations?.startsWith("In people's heads") || answers.operations?.startsWith("Spreadsheets") ? "Low" : "Medium"}</b></span>
       <p className="result-reason">{reason}</p>
     </div>)}</div>
