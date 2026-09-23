@@ -68,11 +68,13 @@ It lives in `src/lib/site-content.ts` as `BOOKING_URL` — one constant, importe
 everywhere it's used. That is the single thing to change to swap in a different
 booking tool.
 
-**The two forms do not submit anywhere.** The contact form (`src/routes/contact.tsx`)
-and the opportunity finder (`src/components/opportunity-finder.tsx`) both call
-`preventDefault()` and stop. Anyone filling one in gets no response and you get
-no lead. Wiring them up means adding a server function or a form endpoint, and
-widening `form-action` in all five header files at the same time.
+The contact form (`src/routes/contact.tsx`) and opportunity finder
+(`src/components/opportunity-finder.tsx`) submit to a same-origin server
+function. It sends each enquiry to `contact@utkarshsharma.in` through the
+Hostinger Mail API. Set `HOSTINGER_MAIL_API_TOKEN` in the server's environment;
+the token must be scoped to the `contact@utkarshsharma.in` mailbox. The server
+looks up that mailbox's resource ID and never exposes the token to the browser.
+If mail delivery fails, the form shows an error and keeps the entered details.
 
 ## Deploying
 

@@ -18,7 +18,7 @@ Content-Security-Policy
   img-src     'self' data:
   font-src    'self'
   connect-src 'self'
-  form-action 'none'
+  form-action 'self'
   frame-ancestors 'none'
   base-uri 'none'
   object-src 'none'
@@ -57,10 +57,9 @@ directives and nothing else:
 Everything the page loads — fonts, logo, favicon, JS, CSS — is same-origin.
 There are no third-party requests, so no host allowlist is needed anywhere.
 
-form-action stays 'none' because no form on the site submits: the contact form
-and the opportunity finder both call preventDefault(). Wiring either one to a
-real endpoint means widening this to 'self' or to the handler's origin, in all
-five files, in the same commit.
+form-action is 'self' because the contact form and opportunity finder submit
+through same-origin server functions. The server sends mail through Hostinger;
+the browser never contacts the mail API directly.
 
 Deploying
 ---------

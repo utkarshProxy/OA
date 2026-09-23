@@ -166,7 +166,7 @@ function SolutionSystemPage() {
           <p className="t-label">Get started</p>
           <h2>{page.cta.title}</h2>
           <p>{page.cta.text}</p>
-          {page.cta.note && <small>{page.cta.note}</small>}
+          {"note" in page.cta && page.cta.note && <small>{page.cta.note}</small>}
           <div>
             <a className="btn btn-secondary" href={BOOKING_URL} target="_blank" rel="noreferrer">
               Book a call <ArrowRight size={15} aria-hidden="true" />

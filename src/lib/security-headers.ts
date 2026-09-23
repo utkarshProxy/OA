@@ -23,10 +23,8 @@ export const CONTENT_SECURITY_POLICY = [
   "img-src 'self' data:",
   "font-src 'self'",
   "connect-src 'self'",
-  // No form on this site posts anywhere: both the contact form and the
-  // opportunity finder call preventDefault(). Widen this to 'self' (or to the
-  // form handler's origin) at the same time as wiring a real submission.
-  "form-action 'none'",
+  // Both forms submit through same-origin server functions.
+  "form-action 'self'",
   "frame-ancestors 'none'",
   "base-uri 'none'",
   "object-src 'none'",
