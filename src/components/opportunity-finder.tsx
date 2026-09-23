@@ -18,10 +18,15 @@ const FINDER_CONFIG = {
     seeResults: "See my results",
     startAgain: "Start again",
     hoursCaption: "estimated hours saved / week",
-    hoursNote: "{FINDER_CONFIG.copy.hoursNote}",
+    hoursNote: "Estimates based on your answers. We confirm the real numbers in the audit.",
     impact: "Impact",
     complexity: "Complexity",
-    customImpact: FINDER_CONFIG.copy.customImpact,
+    impactHigh: "High",
+    impactMedium: "Medium",
+    complexityLow: "Low",
+    complexityMedium: "Medium",
+    defaultTeamHeadline: "Start where the value is clearest.",
+    customImpact: "To scope",
     form: {
       name: "Name",
       email: "Email",
@@ -162,7 +167,7 @@ function FinderResults({ answers, onReset }: { answers: Answers; onReset: () => 
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const recommendations = useMemo(() => getRecommendations(answers), [answers]);
   const hoursEstimate = getHoursEstimate(answers);
-  const headline = FINDER_CONFIG.teamHeadlines[answers.teamSize as keyof typeof FINDER_CONFIG.teamHeadlines] ?? "Start where the value is clearest.";
+  const headline = FINDER_CONFIG.teamHeadlines[answers.teamSize as keyof typeof FINDER_CONFIG.teamHeadlines] ?? FINDER_CONFIG.copy.defaultTeamHeadline;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -193,11 +198,11 @@ function FinderResults({ answers, onReset }: { answers: Answers; onReset: () => 
     <div className="result-table">{recommendations.map(({ slug, title, reason, score }, index) => <div className="result-row" key={slug}>
       <span>{String(index + 1).padStart(2, "0")}</span>
       <strong>{slug === "custom" ? <Link to="/contact">{title}</Link> : <Link to="/solutions" hash={slug}>{title}</Link>}</strong>
-      <span>{FINDER_CONFIG.copy.impact} <b>{score >= 4 ? "High" : score >= 2 ? "Medium" : "To scope"}</b></span>
-      <span>{FINDER_CONFIG.copy.complexity} <b>{answers.operations?.startsWith("In people's heads") || answers.operations?.startsWith("Spreadsheets") ? "Low" : "Medium"}</b></span>
+      <span>{FINDER_CONFIG.copy.impact} <b>{score >= 4 ? FINDER_CONFIG.copy.impactHigh : score >= 2 ? FINDER_CONFIG.copy.impactMedium : FINDER_CONFIG.copy.customImpact}</b></span>
+      <span>{FINDER_CONFIG.copy.complexity} <b>{answers.operations?.startsWith("In people's heads") || answers.operations?.startsWith("Spreadsheets") ? FINDER_CONFIG.copy.complexityLow : FINDER_CONFIG.copy.complexityMedium}</b></span>
       <p className="result-reason">{reason}</p>
     </div>)}</div>
-    <p className="finder-note">Estimates based on your answers. We confirm the real numbers in the audit.</p>
+    <p className="finder-note">{FINDER_CONFIG.copy.hoursNote}</p>
     <form className="capture-form" onSubmit={handleSubmit}>
       <label>{FINDER_CONFIG.copy.form.name}<input name="name" required maxLength={120} placeholder={FINDER_CONFIG.copy.form.namePlaceholder} /></label>
       <label>{FINDER_CONFIG.copy.form.email}<input name="email" type="email" required maxLength={254} placeholder={FINDER_CONFIG.copy.form.emailPlaceholder} /></label>
