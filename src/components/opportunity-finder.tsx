@@ -44,22 +44,47 @@ const FINDER_CONFIG = {
   },
   questions: [
     { id: "businessType", label: "What kind of business do you run?", options: [
-      "Home services (plumbing, HVAC, cleaning, repairs)", "Clinic, salon or wellness", "Professional services (legal, accounting, real estate, insurance)", "Other small local business",
+      { code: "A", label: "Home services (plumbing, HVAC, cleaning, repairs)" },
+      { code: "B", label: "Clinic, salon or wellness" },
+      { code: "C", label: "Professional services (legal, accounting, real estate, insurance)" },
+      { code: "D", label: "Other small local business" },
     ] },
-    { id: "teamSize", label: "How many people work in your business?", options: ["Just me", "2–10", "11–50", "51+"] },
+    { id: "teamSize", label: "How many people work in your business?", options: [
+      { code: "A", label: "Just me" },
+      { code: "B", label: "2–10" },
+      { code: "C", label: "11–50" },
+      { code: "D", label: "51+" },
+    ] },
     { id: "operations", label: "How does day-to-day work get tracked?", options: [
-      "In people's heads and WhatsApp groups", "Spreadsheets and shared folders", "A booking, job or practice tool", "A CRM or system we keep up to date",
+      { code: "A", label: "In people's heads and WhatsApp groups" },
+      { code: "B", label: "Spreadsheets and shared folders" },
+      { code: "C", label: "A booking, job or practice tool" },
+      { code: "D", label: "A CRM or system we keep up to date" },
     ] },
     { id: "socialAndQueries", label: "How are your social media and customer messages going?", options: [
-      "Posting is patchy, and messages wait until someone's free", "We post regularly, but replies to DMs and calls are slow", "Replies are quick, but we rarely post", "Both are fine, but they take too much time",
+      { code: "A", label: "Posting is patchy, and messages wait until someone's free" },
+      { code: "B", label: "We post regularly, but replies to DMs and calls are slow" },
+      { code: "C", label: "Replies are quick, but we rarely post" },
+      { code: "D", label: "Both are fine, but they take too much time" },
     ] },
     { id: "salesFollowUp", label: "What happens after someone enquires?", options: [
-      "We reply when we can, with no set process", "We send a quote and follow up if we remember", "Leads are tracked, but every follow-up is manual", "Follow-ups already run automatically",
+      { code: "A", label: "We reply when we can, with no set process" },
+      { code: "B", label: "We send a quote and follow up if we remember" },
+      { code: "C", label: "Leads are tracked, but every follow-up is manual" },
+      { code: "D", label: "Follow-ups already run automatically" },
     ] },
     { id: "customerDelight", label: "After a job or visit, what happens next?", options: [
-      "Nothing, unless they come back on their own", "We sometimes ask for a review", "We send reminders or rebooking messages by hand", "Reviews, reminders and offers go out automatically",
+      { code: "A", label: "Nothing, unless they come back on their own" },
+      { code: "B", label: "We sometimes ask for a review" },
+      { code: "C", label: "We send reminders or rebooking messages by hand" },
+      { code: "D", label: "Reviews, reminders and offers go out automatically" },
     ] },
-    { id: "paperworkHours", label: "How many hours a week does your team spend on paperwork like claims, compliance forms, invoices and data entry?", options: ["Under 5", "5–15", "15–30", "30+"] },
+    { id: "paperworkHours", label: "How many hours a week does your team spend on paperwork like claims, compliance forms, invoices and data entry?", options: [
+      { code: "A", label: "Under 5" },
+      { code: "B", label: "5–15" },
+      { code: "C", label: "15–30" },
+      { code: "D", label: "30+" },
+    ] },
     { id: "problem", label: "What problem do you want us to solve?", placeholder: "e.g. We miss calls after 6pm and lose bookings to competitors.", helper: "Optional, but it helps us come back with something useful." },
   ],
   scores: {
@@ -99,9 +124,9 @@ function getRecommendations(answers: Answers): Recommendation[] {
     const answer = answers[id];
     const question = FINDER_CONFIG.questions.find((entry) => entry.id === id);
     if (!answer || !question || !("options" in question)) continue;
-    const option = (["A", "B", "C", "D"] as const)[question.options.indexOf(answer)];
-    if (!option) continue;
-    const points = FINDER_CONFIG.scores[id][option];
+    const selectedOption = question.options.find((option) => option.label === answer);
+    if (!selectedOption) continue;
+    const points = FINDER_CONFIG.scores[id][selectedOption.code];
     for (const [slug, score] of Object.entries(points) as [SolutionSlug, number][]) scores[slug] += score;
   }
 
@@ -121,10 +146,19 @@ function getRecommendations(answers: Answers): Recommendation[] {
   return recommendations.length ? recommendations : [{ slug: "custom", ...FINDER_CONFIG.custom, score: 0 }];
 }
 
+function getOptionCode(id: Exclude<AnswerId, "businessType" | "teamSize" | "problem">, answer?: string) {
+  if (!answer) return undefined;
+  const question = FINDER_CONFIG.questions.find((entry) => entry.id === id);
+  if (!question || !("options" in question)) return undefined;
+  return question.options.find((option) => option.label === answer)?.code;
+}
+
 function getHoursEstimate(answers: Answers): string {
   const [baseLow, baseHigh] = FINDER_CONFIG.hours[answers.paperworkHours as keyof typeof FINDER_CONFIG.hours] ?? [1, 2];
-  const followUpBonus = answers.salesFollowUp?.startsWith("We reply when") || answers.salesFollowUp?.startsWith("We send a quote") ? 2 : 0;
-  const slowReplyBonus = answers.socialAndQueries?.startsWith("Posting is patchy") || answers.socialAndQueries?.startsWith("We post regularly") ? 1 : 0;
+  const followUpCode = getOptionCode("salesFollowUp", answers.salesFollowUp);
+  const slowReplyCode = getOptionCode("socialAndQueries", answers.socialAndQueries);
+  const followUpBonus = followUpCode === "A" || followUpCode === "B" ? 2 : 0;
+  const slowReplyBonus = slowReplyCode === "A" || slowReplyCode === "B" ? 1 : 0;
   return `${baseLow + followUpBonus + slowReplyBonus}–${baseHigh + followUpBonus + slowReplyBonus}`;
 }
 
@@ -151,7 +185,7 @@ export function OpportunityFinder() {
       <div className="finder-question" aria-live="polite">
         <p className="t-label">{FINDER_CONFIG.copy.questionEyebrow}</p>
         <h3>{currentQuestion.label}</h3>
-        {"options" in currentQuestion ? <div className="finder-options">{currentQuestion.options.map((option) => <button type="button" key={option} onClick={() => choose(option)}><span>{option}</span><ArrowRight size={18} aria-hidden="true" /></button>)}</div> : <>
+        {"options" in currentQuestion ? <div className="finder-options">{currentQuestion.options.map((option) => <button type="button" key={option.code} onClick={() => choose(option.label)}><span>{option.label}</span><ArrowRight size={18} aria-hidden="true" /></button>)}</div> : <>
           <textarea rows={4} maxLength={1000} placeholder={currentQuestion.placeholder} value={answers.problem ?? ""} onChange={(event) => setAnswers({ ...answers, problem: event.target.value })} />
           <p className="finder-helper">{currentQuestion.helper}</p>
           <div className="finder-question-actions"><button className="btn btn-primary" type="button" onClick={() => choose(answers.problem ?? "")}>{FINDER_CONFIG.copy.seeResults} <ArrowRight size={15} /></button><button className="finder-back" type="button" onClick={() => choose("")}>{FINDER_CONFIG.copy.skip}</button></div>
@@ -199,7 +233,7 @@ function FinderResults({ answers, onReset }: { answers: Answers; onReset: () => 
       <span>{String(index + 1).padStart(2, "0")}</span>
       <strong>{slug === "custom" ? <Link to="/contact">{title}</Link> : <Link to="/solutions" hash={slug}>{title}</Link>}</strong>
       <span>{FINDER_CONFIG.copy.impact} <b>{score >= 4 ? FINDER_CONFIG.copy.impactHigh : score >= 2 ? FINDER_CONFIG.copy.impactMedium : FINDER_CONFIG.copy.customImpact}</b></span>
-      <span>{FINDER_CONFIG.copy.complexity} <b>{answers.operations?.startsWith("In people's heads") || answers.operations?.startsWith("Spreadsheets") ? FINDER_CONFIG.copy.complexityLow : FINDER_CONFIG.copy.complexityMedium}</b></span>
+      <span>{FINDER_CONFIG.copy.complexity} <b>{getOptionCode("operations", answers.operations) === "A" || getOptionCode("operations", answers.operations) === "B" ? FINDER_CONFIG.copy.complexityLow : FINDER_CONFIG.copy.complexityMedium}</b></span>
       <p className="result-reason">{reason}</p>
     </div>)}</div>
     <p className="finder-note">{FINDER_CONFIG.copy.hoursNote}</p>
