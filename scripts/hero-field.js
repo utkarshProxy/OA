@@ -13,7 +13,7 @@
   "use strict";
 
   var GLYPHS = " ·:+*x#%";
-  var COLORS = ["#fc5957", "#e3f42a", "#111113", "#8b8781"];
+  var COLORS = ["#8f1d1d", "#4d5b0a", "#111113", "#4a4540"];
   var FRAME_MS = 42;
   var RESIZE_DEBOUNCE_MS = 120;
   var MAX_DPR = 1.25;
