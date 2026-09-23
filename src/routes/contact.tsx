@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { ArrowUpRight } from "lucide-react";
+import { useState, type FormEvent } from "react";
 import { PageFrame, PageHero } from "@/components/site";
 import { BOOKING_URL } from "@/lib/site-content";
-
-const GOOGLE_FORM_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSc9ag3nN_qLcSzRL6_Htl7jHh-CtQSf1xd-QAh5KzA3D7E_0Q/viewform?usp=publish-editor";
+import { submitLead } from "@/lib/submit-lead";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -36,6 +36,35 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const send = useServerFn(submitLead);
+  const [status, setStatus] = useState<
+    "idle" | "sending" | "success" | "error"
+  >("idle");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const fields = new FormData(form);
+    setStatus("sending");
+
+    try {
+      await send({
+        data: {
+          source: "contact",
+          name: String(fields.get("name") ?? ""),
+          email: String(fields.get("email") ?? ""),
+          company: String(fields.get("company") ?? ""),
+          message: String(fields.get("message") ?? ""),
+          website: String(fields.get("website") ?? ""),
+        },
+      });
+      form.reset();
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
+  }
+
   return (
     <PageFrame>
       <PageHero
@@ -45,24 +74,71 @@ function ContactPage() {
       />
       <section className="contact-section section-light">
         <div className="wrap contact-grid">
-          <div className="contact-form">
-            <p>
-              Share a few details about the work that feels slower or more
-              manual than it should. Your responses are sent directly to OBOU
-              Automations.
-            </p>
-            <a
+          <form className="contact-form" onSubmit={handleSubmit}>
+            <label>
+              Name
+              <input
+                name="name"
+                required
+                maxLength={120}
+                placeholder="Your name"
+              />
+            </label>
+            <label>
+              Work email
+              <input
+                name="email"
+                required
+                type="email"
+                maxLength={254}
+                placeholder="you@company.com"
+              />
+            </label>
+            <label>
+              Company
+              <input
+                name="company"
+                required
+                maxLength={120}
+                placeholder="Company name"
+              />
+            </label>
+            <label>
+              Where does work get stuck?
+              <textarea
+                name="message"
+                rows={5}
+                maxLength={3000}
+                placeholder="A repetitive task, slow handoff, missed follow-up, or anything else..."
+              />
+            </label>
+            <input
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              hidden
+            />
+            <button
               className="btn btn-primary"
-              href={GOOGLE_FORM_URL}
-              target="_blank"
-              rel="noreferrer"
+              type="submit"
+              disabled={status === "sending"}
             >
-              Open the inquiry form <ArrowUpRight size={15} />
-            </a>
-            <p className="form-status" role="status">
-              Opens a short, secure Google Form in a new tab.
+              {status === "sending" ? "Sending..." : "Send the workflow"}{" "}
+              <ArrowUpRight size={15} />
+            </button>
+            <p
+              className="form-status"
+              role={status === "error" ? "alert" : "status"}
+              aria-live="polite"
+            >
+              {status === "success" &&
+                "Thanks. Your message was sent, and we’ll reply by email."}
+              {status === "error" &&
+                "Your message could not be sent. Please try again."}
             </p>
-          </div>
+          </form>
           <aside>
             <p className="t-label">Prefer to talk?</p>
             <h2>Book a straightforward conversation.</h2>
