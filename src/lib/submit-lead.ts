@@ -53,40 +53,46 @@ export const submitLead = createServerFn({ method: "POST" })
     const token = process.env["HOSTINGER_MAIL_API_TOKEN"];
     if (!token) throw new Error("Form email delivery is not configured");
 
-    const id = await getMailboxId(token);
-    const details = [
-      `Name: ${data.name}`,
-      `Work email: ${data.email}`,
-      `Company: ${data.company}`,
-      `Source: ${data.source === "contact" ? "Contact page" : "Opportunity finder"}`,
-    ];
-    if (data.message) details.push("", "Where work gets stuck:", data.message);
-    if (data.answers?.length) {
-      details.push("", "Opportunity finder answers:");
-      data.answers.forEach((answer, index) => details.push(`${index + 1}. ${answer}`));
+    try {
+      const id = await getMailboxId(token);
+      const details = [
+        `Name: ${data.name}`,
+        `Work email: ${data.email}`,
+        `Company: ${data.company}`,
+        `Source: ${data.source === "contact" ? "Contact page" : "Opportunity finder"}`,
+      ];
+      if (data.message) details.push("", "Where work gets stuck:", data.message);
+      if (data.answers?.length) {
+        details.push("", "Opportunity finder answers:");
+        data.answers.forEach((answer, index) => details.push(`${index + 1}. ${answer}`));
+      }
+
+      const response = await fetch(`${MAIL_API}/mailboxes/${encodeURIComponent(id)}/send`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: [RECIPIENT],
+          displayName: "OBOU website",
+          subject: data.source === "contact"
+            ? "New website workflow enquiry"
+            : "New AI opportunity finder enquiry",
+          text: details.join("\n"),
+        }),
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!response.ok) throw new Error(`Mail send failed (${response.status})`);
+
+      recentSubmissions.set(key, {
+        count: current && current.resetAt > now ? current.count + 1 : 1,
+        resetAt: current && current.resetAt > now ? current.resetAt : now + 15 * 60 * 1000,
+      });
+      return { success: true };
+    } catch (error) {
+      // Keep provider details server-side; never expose the token or request body.
+      console.error("Website form delivery error:", error);
+      throw new Error("Website form delivery failed");
     }
-
-    const response = await fetch(`${MAIL_API}/mailboxes/${encodeURIComponent(id)}/send`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        to: [RECIPIENT],
-        displayName: "OBOU website",
-        subject: data.source === "contact"
-          ? "New website workflow enquiry"
-          : "New AI opportunity finder enquiry",
-        text: details.join("\n"),
-      }),
-      signal: AbortSignal.timeout(10000),
-    });
-    if (!response.ok) throw new Error(`Form email delivery failed (${response.status})`);
-
-    recentSubmissions.set(key, {
-      count: current && current.resetAt > now ? current.count + 1 : 1,
-      resetAt: current && current.resetAt > now ? current.resetAt : now + 15 * 60 * 1000,
-    });
-    return { success: true };
   });

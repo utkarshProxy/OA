@@ -22,6 +22,12 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
 // from cross-site requests.
 const csrfMiddleware = createCsrfMiddleware({
   filter: (ctx) => ctx.handlerType === "serverFn",
+  // Hostinger forwards requests to the app with an internal URL, so comparing
+  // Origin against request.url rejects legitimate submissions from this site.
+  origin: (origin, ctx) =>
+    origin === "https://obouautomations.com" ||
+    origin === "https://www.obouautomations.com" ||
+    (process.env["NODE_ENV"] !== "production" && origin === new URL(ctx.request.url).origin),
 });
 
 export const startInstance = createStart(() => ({
