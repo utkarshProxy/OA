@@ -107,12 +107,12 @@ const FINDER_CONFIG = {
   },
   custom: { title: "Built for you", reason: "Your basics are already covered. Let's find the one custom workflow that moves the needle." },
   teamHeadlines: {
-    "Just me": "Start with one quick win that gives you your evenings back.",
-    "2–10": "Start where the value is clearest.",
-    "11–50": "Start where the value is clearest for the whole team.",
-    "51+": "Start where the value is clearest for the whole team.",
+    A: "Start with one quick win that gives you your evenings back.",
+    B: "Start where the value is clearest.",
+    C: "Start where the value is clearest for the whole team.",
+    D: "Start where the value is clearest for the whole team.",
   },
-  hours: { "Under 5": [1, 2], "5–15": [3, 7], "15–30": [6, 14], "30+": [12, 20] },
+  hours: { A: [1, 2], B: [3, 7], C: [6, 14], D: [12, 20] },
 } as const;
 
 type Recommendation = { slug: SolutionSlug | "custom"; title: string; reason: string; score: number };
@@ -146,7 +146,7 @@ function getRecommendations(answers: Answers): Recommendation[] {
   return recommendations.length ? recommendations : [{ slug: "custom", ...FINDER_CONFIG.custom, score: 0 }];
 }
 
-function getOptionCode(id: Exclude<AnswerId, "businessType" | "teamSize" | "problem">, answer?: string) {
+function getOptionCode(id: Exclude<AnswerId, "problem">, answer?: string) {
   if (!answer) return undefined;
   const question = FINDER_CONFIG.questions.find((entry) => entry.id === id);
   if (!question || !("options" in question)) return undefined;
@@ -154,7 +154,8 @@ function getOptionCode(id: Exclude<AnswerId, "businessType" | "teamSize" | "prob
 }
 
 function getHoursEstimate(answers: Answers): string {
-  const [baseLow, baseHigh] = FINDER_CONFIG.hours[answers.paperworkHours as keyof typeof FINDER_CONFIG.hours] ?? [1, 2];
+  const paperworkCode = getOptionCode("paperworkHours", answers.paperworkHours);
+  const [baseLow, baseHigh] = paperworkCode ? FINDER_CONFIG.hours[paperworkCode] : [1, 2];
   const followUpCode = getOptionCode("salesFollowUp", answers.salesFollowUp);
   const slowReplyCode = getOptionCode("socialAndQueries", answers.socialAndQueries);
   const followUpBonus = followUpCode === "A" || followUpCode === "B" ? 2 : 0;
@@ -201,7 +202,8 @@ function FinderResults({ answers, onReset }: { answers: Answers; onReset: () => 
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const recommendations = useMemo(() => getRecommendations(answers), [answers]);
   const hoursEstimate = getHoursEstimate(answers);
-  const headline = FINDER_CONFIG.teamHeadlines[answers.teamSize as keyof typeof FINDER_CONFIG.teamHeadlines] ?? FINDER_CONFIG.copy.defaultTeamHeadline;
+  const teamSizeCode = getOptionCode("teamSize", answers.teamSize);
+  const headline = teamSizeCode ? FINDER_CONFIG.teamHeadlines[teamSizeCode] : FINDER_CONFIG.copy.defaultTeamHeadline;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
