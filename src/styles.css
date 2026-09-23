@@ -265,7 +265,7 @@ p, h1, h2, h3 { margin-top: 0; }
 .result-reason { grid-column: 2 / -1; margin: 0; }
 .finder-note { margin: 12px 0 0; }
 .capture-form { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 12px; margin-top: 30px; }
-.capture-form > .btn { grid-column: 1 / -1; justify-self: start; }
+.capture-form > .btn { grid-column: 1 / -1; justify-self: stretch; width: 100%; }
 .capture-form > label { min-width: 0; }
 .capture-form label, .contact-form label { display: grid; gap: 7px; font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; }
 .capture-form input, .contact-form input, .contact-form textarea, .finder-question textarea { width: 100%; border: 1px solid currentColor; border-radius: 0; background: transparent; color: inherit; padding: 12px; font-family: var(--font-sans); font-size: 13px; text-transform: none; }
