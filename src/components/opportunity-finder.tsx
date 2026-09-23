@@ -64,8 +64,10 @@ function getRecommendations(answers: Answers): Recommendation[] {
   const scoredQuestionIds = ["operations", "socialAndQueries", "salesFollowUp", "customerDelight", "paperworkHours"] as const;
   for (const id of scoredQuestionIds) {
     const answer = answers[id];
-    if (!answer) continue;
-    const option = (["A", "B", "C", "D"] as const)[FINDER_CONFIG.questions.find((question) => question.id === id)!.options.indexOf(answer as never)];
+    const question = FINDER_CONFIG.questions.find((entry) => entry.id === id);
+    if (!answer || !question || !("options" in question)) continue;
+    const option = (["A", "B", "C", "D"] as const)[question.options.indexOf(answer)];
+    if (!option) continue;
     const points = FINDER_CONFIG.scores[id][option];
     for (const [slug, score] of Object.entries(points) as [SolutionSlug, number][]) scores[slug] += score;
   }
@@ -160,7 +162,7 @@ function FinderResults({ answers, onReset }: { answers: Answers; onReset: () => 
 
   return <div className="finder-results">
     <div className="results-head"><div><p className="t-label"><Check size={12} /> Your best AI opportunities</p><h3>{headline}</h3></div><div className="time-save"><strong>{hoursEstimate}</strong><span>estimated hours saved / week</span></div></div>
-    <div className="result-table">{recommendations.map(({ slug, title, impact, reason, score }, index) => <div className="result-row" key={slug}>
+    <div className="result-table">{recommendations.map(({ slug, title, reason, score }, index) => <div className="result-row" key={slug}>
       <span>{String(index + 1).padStart(2, "0")}</span>
       <strong>{slug === "custom" ? <Link to="/contact">{title}</Link> : <Link to="/solutions" hash={slug}>{title}</Link>}</strong>
       <span>Impact <b>{score >= 4 ? "High" : "Medium"}</b></span>
