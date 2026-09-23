@@ -85,7 +85,7 @@ function ContactPage() {
               />
             </label>
             <label>
-              Work email
+              Email
               <input
                 name="email"
                 required
