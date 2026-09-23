@@ -10,5 +10,5 @@ export const Route = createFileRoute("/tools")({
 });
 const tools=["Workflow Cost Calculator","AI Readiness Assessment","AI Stack Recommender","Process Audit"];
 function ToolsPage(){return <PageFrame><PageHero eyebrow="Tools" title="Useful before the first workshop." copy="Small tools for finding repetitive work, estimating its cost, and choosing a sensible place to start." />
-  <section className="finder-section section-dark"><div className="wrap"><SectionIntro dark eyebrow="Live tool" title="What should you automate first?" copy="Answer six quick questions. Get a practical starting point—not a forty-page transformation strategy."/><OpportunityFinder/></div></section>
+  <section className="finder-section section-light"><div className="wrap"><SectionIntro eyebrow="Live tool" title="What should you automate first?" copy="Seven quick questions and one optional one. A practical opportunity map. No jargon required."/><OpportunityFinder/></div></section>
   <section className="tool-library section-light"><div className="wrap"><p className="t-label">Tool library</p><div className="tool-rows"><div><span>01</span><h3>Automation Opportunity Finder</h3><b>Live</b></div>{tools.map((x,i)=><div key={x}><span>0{i+2}</span><h3>{x}</h3><b>Coming soon</b></div>)}</div></div></section></PageFrame>}
