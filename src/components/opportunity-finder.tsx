@@ -34,8 +34,8 @@ const FINDER_CONFIG = {
       whatsapp: "WhatsApp number (optional)",
       submit: "Get my full workflow map",
       sending: "Sending...",
-      success: FINDER_CONFIG.copy.form.success,
-      error: FINDER_CONFIG.copy.form.error,
+      success: "Thanks! We'll email your workflow map within one business day.",
+      error: "Your answers could not be sent. Please try again.",
       namePlaceholder: "Your name",
       emailPlaceholder: "you@business.com",
       companyPlaceholder: "Business name",
@@ -213,8 +213,8 @@ function FinderResults({ answers, onReset }: { answers: Answers; onReset: () => 
         {status === "sending" ? FINDER_CONFIG.copy.form.sending : FINDER_CONFIG.copy.form.submit} <ArrowRight size={15} aria-hidden="true" />
       </button>
       <p className="form-status" role={status === "error" ? "alert" : "status"} aria-live="polite">
-        {status === "success" && "Thanks! We'll email your workflow map within one business day."}
-        {status === "error" && "Your answers could not be sent. Please try again."}
+        {status === "success" && FINDER_CONFIG.copy.form.success}
+        {status === "error" && FINDER_CONFIG.copy.form.error}
       </p>
     </form>
     <button className="finder-back" type="button" onClick={onReset}><ArrowLeft size={15} /> {FINDER_CONFIG.copy.startAgain}</button>
