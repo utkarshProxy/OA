@@ -5,22 +5,6 @@ import { OpportunityFinder } from "@/components/opportunity-finder";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Eyebrow, FinalCTA, PageFrame, PrimaryLink, SectionIntro } from "@/components/site";
 import { SolutionTabs } from "@/components/solution-showcase";
-import canvaLogo from "@/assets/tool-logos/canva.svg.asset.json";
-import chatgptLogo from "@/assets/tool-logos/chatgpt.svg.asset.json";
-import claudeLogo from "@/assets/tool-logos/claude.svg.asset.json";
-import facebookLogo from "@/assets/tool-logos/facebook.svg.asset.json";
-import gmailLogo from "@/assets/tool-logos/gmail.svg.asset.json";
-import calendarLogo from "@/assets/tool-logos/google-calendar.svg.asset.json";
-import driveLogo from "@/assets/tool-logos/google-drive.svg.asset.json";
-import hubspotLogo from "@/assets/tool-logos/hubspot.svg.asset.json";
-import instagramLogo from "@/assets/tool-logos/instagram.svg.asset.json";
-import metaLogo from "@/assets/tool-logos/meta.svg.asset.json";
-import museLogo from "@/assets/tool-logos/muse.svg.asset.json";
-import n8nLogo from "@/assets/tool-logos/n8n.svg.asset.json";
-import outlookLogo from "@/assets/tool-logos/outlook.svg.asset.json";
-import quickbooksLogo from "@/assets/tool-logos/quickbooks.svg.asset.json";
-import salesforceLogo from "@/assets/tool-logos/salesforce.svg.asset.json";
-import trelloLogo from "@/assets/tool-logos/trello.svg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -35,12 +19,12 @@ export const Route = createFileRoute("/")({
 function Index() { return <PageFrame><Hero/><ToolTicker/><Story/><Solutions/><WorkflowCompare/><Audit/><Ways/><Finder/><FinalCTA/></PageFrame>; }
 
 const toolLogos = [
-  ["Gmail", gmailLogo.url], ["Trello", trelloLogo.url], ["Google Drive", driveLogo.url],
-  ["Microsoft Outlook", outlookLogo.url], ["Facebook", facebookLogo.url], ["Instagram", instagramLogo.url],
-  ["Meta Business", metaLogo.url], ["Muse AI", museLogo.url], ["Google Calendar", calendarLogo.url],
-  ["Claude", claudeLogo.url], ["ChatGPT", chatgptLogo.url], ["n8n", n8nLogo.url],
-  ["Salesforce", salesforceLogo.url], ["HubSpot", hubspotLogo.url], ["Canva", canvaLogo.url],
-  ["QuickBooks", quickbooksLogo.url],
+  ["Gmail", "/tool-logos/gmail.svg"], ["Trello", "/tool-logos/trello.svg"], ["Google Drive", "/tool-logos/google-drive.svg"],
+  ["Microsoft Outlook", "/tool-logos/outlook.svg"], ["Facebook", "/tool-logos/facebook.svg"], ["Instagram", "/tool-logos/instagram.svg"],
+  ["Meta Business", "/tool-logos/meta.svg"], ["Muse AI", "/tool-logos/muse.svg"], ["Google Calendar", "/tool-logos/google-calendar.svg"],
+  ["Claude", "/tool-logos/claude.svg"], ["ChatGPT", "/tool-logos/chatgpt.svg"], ["n8n", "/tool-logos/n8n.svg"],
+  ["Salesforce", "/tool-logos/salesforce.svg"], ["HubSpot", "/tool-logos/hubspot.svg"], ["Canva", "/tool-logos/canva.svg"],
+  ["QuickBooks", "/tool-logos/quickbooks.svg"],
 ] as const;
 function ToolTicker(){return <section className="tool-ticker section-light" aria-label={`Agents that talk to your tools: ${toolLogos.map(([name])=>name).join(", ")}`}><p className="t-label ticker-label">Agents that talk to your tools</p><div className="ticker-window"><div className="ticker-track" aria-hidden="true">{[...toolLogos,...toolLogos].map(([name,src],i)=><span className="ticker-item" key={`${name}-${i}`}><img src={src} alt="" /></span>)}</div></div></section>}
 
