@@ -28,9 +28,119 @@ const toolLogos = [
 ] as const;
 function ToolTicker(){return <section className="tool-ticker section-light" aria-label={`Agents that talk to your tools: ${toolLogos.map(([name])=>name).join(", ")}`}><p className="t-label ticker-label">Agents that talk to your tools</p><div className="ticker-window"><div className="ticker-track" aria-hidden="true">{[...toolLogos,...toolLogos].map(([name,src],i)=><span className="ticker-item" key={`${name}-${i}`}><img src={src} alt="" /></span>)}</div></div></section>}
 
-function Hero(){return <section className="home-hero section-light"><HeroField/><div className="wrap hero-inner"><div><h1><span className="mark mark-yellow">AI Automation</span> that learns and adapts to your business.<br/>Deploy <span className="mark mark-coral">AI Agents</span> in your painstaking workflows 👉 GROWTH</h1><p className="hero-copy">We implement most advanced AI models into your existing processes.</p><p className="hero-points"><span>7 Day Builds.</span><span>Fixed Price, not an hourly rate.</span><span>Completely Custom</span></p><div className="hero-actions"><PrimaryLink to="/contact">TALK TO US</PrimaryLink><Link className="text-link" to="/" hash="solutions">See Solutions <ArrowRight size={15}/></Link></div></div></div></section>}
+function Hero(){return <section className="home-hero section-light"><HeroFlickerGrid/><div className="wrap hero-inner"><div><h1><span className="mark mark-yellow">AI Automation</span> that learns and adapts to your business.<br/>Deploy <span className="mark mark-coral">AI Agents</span> in your painstaking workflows 👉 GROWTH</h1><p className="hero-copy">We implement most advanced AI models into your existing processes.</p><p className="hero-points"><span>7 Day Builds.</span><span>Fixed Price, not an hourly rate.</span><span>Completely Custom</span></p><div className="hero-actions"><PrimaryLink to="/contact">TALK TO US</PrimaryLink><Link className="text-link" to="/" hash="solutions">See Solutions <ArrowRight size={15}/></Link></div></div></div></sectifunction HeroFlickerGrid() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-function HeroField(){const ref=useRef<HTMLCanvasElement>(null);useEffect(()=>{const c=ref.current;if(!c)return;const ctx=c.getContext("2d");if(!ctx)return;let id=0,t=0,last=performance.now();const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;const draw=()=>{const d=devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight,compact=w<680,gap=compact?12:15,now=performance.now(),delta=Math.min((now-last)/1000,.1);last=now;c.width=w*d;c.height=h*d;ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w,h);ctx.font="9px monospace";const chars="@%#*+=-:. ";const gradient=ctx.createLinearGradient(0,0,w,h);gradient.addColorStop(0,"#1e1b4b");gradient.addColorStop(.34,"#0f4c5c");gradient.addColorStop(.67,"#8f1d1d");gradient.addColorStop(1,"#4d5b0a");for(let y=gap;y<h;y+=gap)for(let x=gap;x<w;x+=gap){const v=(Math.sin(x*.018+t)+Math.cos(y*.022-t*.8)+2)/4;if(v>.24){ctx.globalAlpha=.14+v*.5;ctx.fillStyle=gradient;ctx.fillText(chars[Math.min(chars.length-1,Math.floor((1-v)*chars.length))]??" ",x,y)}}t+=delta*(compact?4.8:1.5);if(!reduce)id=requestAnimationFrame(draw)};draw();return()=>cancelAnimationFrame(id)},[]);return <canvas ref={ref} className="hero-field" aria-hidden="true"/>}
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return;
+
+    const squareSize = 3;
+    const gridGap = 7;
+    const flickerChance = 0.65;
+    const maxOpacity = 0.25;
+    const colors = [
+      "rgba(227, 244, 42,",
+      "rgba(139, 135, 129,",
+      "rgba(96, 130, 182,",
+      "rgba(138, 154, 91,",
+      "rgba(216, 191, 216,",
+    ];
+    const motionQuery = window.matchMedia("prefers-reduced-motion: reduce");
+    let animationFrame: number | null = null;
+    let width = 0;
+    let height = 0;
+    let columns = 0;
+    let rows = 0;
+    let squares = new Float32Array();
+    let lastTime = performance.now();
+    let isVisible = true;
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      width = Math.round(rect.width);
+      height = Math.round(rect.height);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      columns = Math.ceil(width / (squareSize + gridGap));
+      rows = Math.ceil(height / (squareSize + gridGap));
+      squares = new Float32Array(columns * rows);
+      for (let index = 0; index < squares.length; index += 1) {
+        squares[index] = Math.random() * maxOpacity;
+      }
+    };
+
+    const draw = (time: number, shouldUpdate: boolean) => {
+      const delta = Math.min((time - lastTime) / 1000 || 0, 0.1);
+      lastTime = time;
+      ctx.clearRect(0, 0, width, height);
+      for (let column = 0; column < columns; column += 1) {
+        for (let row = 0; row < rows; row += 1) {
+          const index = column * rows + row;
+          if (shouldUpdate && Math.random() < flickerChance * delta) {
+            squares[index] = Math.random() * maxOpacity;
+          }
+          ctx.fillStyle = colors[(column * 3 + row * 5) % colors.length] + squares[index] + ")";
+          ctx.fillRect(
+            column * (squareSize + gridGap),
+            row * (squareSize + gridGap),
+            squareSize,
+            squareSize,
+          );
+        }
+      }
+    };
+
+    const stop = () => {
+      if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+    };
+    const animate = (time: number) => {
+      animationFrame = null;
+      if (!isVisible || document.hidden || motionQuery.matches) return;
+      draw(time, true);
+      animationFrame = requestAnimationFrame(animate);
+    };
+    const startAnimation = () => {
+      if (animationFrame === null && isVisible && !document.hidden && !motionQuery.matches) {
+        lastTime = performance.now();
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+    const redraw = () => {
+      resize();
+      draw(performance.now(), false);
+      startAnimation();
+    };
+    const onVisibilityChange = () => (document.hidden ? stop() : startAnimation());
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      isVisible = entry.isIntersecting;
+      if (isVisible) startAnimation(); else stop();
+    });
+    const resizeObserver = new ResizeObserver(redraw);
+
+    redraw();
+    observer.observe(canvas);
+    resizeObserver.observe(canvas);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    motionQuery.addEventListener("change", redraw);
+
+    return () => {
+      stop();
+      observer.disconnect();
+      resizeObserver.disconnect();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      motionQuery.removeEventListener("change", redraw);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="hero-flicker-grid" aria-hidden="true" />;
+}
 
 const automationTasks = [
   { title: "AI-powered notifications", subtitle: "Smart alerts for critical events", icon: Bell },
