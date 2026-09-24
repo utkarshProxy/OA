@@ -47,7 +47,7 @@ function Hero(){return <section className="home-hero section-light"><HeroFlicker
       "rgba(138, 154, 91,",
       "rgba(216, 191, 216,",
     ];
-    const motionQuery = window.matchMedia("prefers-reduced-motion: reduce");
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     let animationFrame: number | null = null;
     let width = 0;
     let height = 0;
