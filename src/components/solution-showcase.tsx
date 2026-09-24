@@ -18,7 +18,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { CSSProperties } from "react";
-import instagramLogo from "@/assets/tool-logos/instagram.svg.asset.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   leadChannels,
@@ -70,7 +69,7 @@ function FeatureIcon({ name, title }: { name: SolutionIcon; title?: string }) {
   if (title?.startsWith("Instagram"))
     return (
       <span className="solution-icon">
-        <img src={instagramLogo.url} alt="" aria-hidden="true" />
+        <img src={"/tool-logos/instagram.svg"} alt="" aria-hidden="true" />
       </span>
     );
   const Icon = solutionIcons[name];
@@ -190,7 +189,7 @@ export function LeadChannelDemo() {
           return (
             <TabsTrigger value={channel.value} className="channel-tab" key={channel.value}>
               {channel.value === "instagram" ? (
-                <img src={instagramLogo.url} alt="" aria-hidden="true" />
+                <img src={"/tool-logos/instagram.svg"} alt="" aria-hidden="true" />
               ) : (
                 <Icon size={16} aria-hidden="true" />
               )}
