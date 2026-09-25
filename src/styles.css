@@ -367,6 +367,8 @@ p, h1, h2, h3 { margin-top: 0; }
 }
 
 @media (max-width: 680px) {
+  /* Mobile ripple is dimmed in-canvas over the copy; drop the heavy scrim so it can show through. */
+  .hero-inner > div::before { background: radial-gradient(ellipse at 40% 50%, color-mix(in oklab, var(--paper) 55%, transparent) 0%, transparent 75%); filter: blur(18px); }
   .wrap { width: min(100% - 32px, 1240px); }
   .brand { font-size: 14px; }
   .home-solutions, .audit, .process, .solution-detail-list, .work-list, .human-loop, .tool-library, .contact-section, .compare, .ways, .offers, .finder-section, .manifesto { padding-block: 78px; }
