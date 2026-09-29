@@ -252,6 +252,12 @@ p, h1, h2, h3 { margin-top: 0; }
 .finder-options { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
 .finder-options button { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border: 0; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
 .finder-options button:hover { background: var(--accent-primary); color: var(--ink); }
+.finder-options button[aria-pressed="true"] { background: var(--accent-secondary); color: var(--ink); }
+.finder-detail { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; align-items: end; margin-top: 20px; }
+.finder-detail label { grid-column: 1 / -1; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; }
+.finder-detail input { min-width: 0; width: 100%; min-height: 48px; padding: 12px; border: 1px solid currentColor; border-radius: 0; background: transparent; color: inherit; font: inherit; }
+.finder-detail .btn:disabled { opacity: .5; cursor: not-allowed; }
+.finder-audit-context { margin: 0 0 18px; font-size: 13px; overflow-wrap: anywhere; }
 .finder-back { display: flex; align-items: center; gap: 7px; margin: 0 56px 34px; padding: 5px 0; border: 0; border-bottom: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer; font-size: 12px; }
 .finder-back:disabled { opacity: .25; cursor: default; }
 .finder-results { padding: 50px 56px 30px; }
@@ -267,6 +273,8 @@ p, h1, h2, h3 { margin-top: 0; }
 .result-row strong a { text-decoration: underline; text-decoration-color: var(--accent-primary); text-underline-offset: 3px; }
 .result-reason { grid-column: 2 / -1; margin: 0; }
 .finder-note { margin: 12px 0 0; }
+.finder-details-heading { margin: 32px 0 6px; font-size: 20px; line-height: 1.2; }
+.finder-results > .finder-helper { margin: 0; }
 .capture-form { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 12px; margin-top: 30px; }
 .capture-form > .btn { grid-column: 1 / -1; justify-self: stretch; width: 100%; }
 .capture-form > label { min-width: 0; }
@@ -417,6 +425,8 @@ p, h1, h2, h3 { margin-top: 0; }
   .finder-shell { min-height: 570px; }
   .finder-question, .finder-results { padding: 36px 20px; }
   .finder-options { grid-template-columns: 1fr; }
+  .finder-detail { grid-template-columns: 1fr; }
+  .finder-detail label { grid-column: 1; }
   .finder-back { margin-inline: 20px; }
   .results-head { flex-direction: column; }
   .time-save { width: 100%; }

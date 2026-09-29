@@ -56,7 +56,7 @@ export function SectionIntro({ eyebrow, title, copy, dark = false }: { eyebrow: 
 }
 
 export function PrimaryLink({ to = "/", children }: { to?: "/" | "/contact" | "/solutions" | "/tools" | "/work" | "/how-to-start"; children: ReactNode }) {
-  return <Link to={to} hash={to === "/" ? "finder" : undefined} className="btn btn-primary">{children}<ArrowUpRight size={15} /></Link>;
+  return <Link to={to} {...(to === "/" ? { hash: "finder" } : {})} className="btn btn-primary">{children}<ArrowUpRight size={15} /></Link>;
 }
 
 export function Flow({ steps, compact = false }: { steps: readonly string[]; compact?: boolean }) {
