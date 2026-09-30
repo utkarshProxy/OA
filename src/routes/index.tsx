@@ -5,6 +5,7 @@ import { OpportunityFinder } from "@/components/opportunity-finder";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Eyebrow, FinalCTA, PageFrame, PrimaryLink, SectionIntro } from "@/components/site";
 import { SolutionTabs } from "@/components/solution-showcase";
+import { Pricing } from "@/components/ui/pricing-1";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -16,7 +17,7 @@ export const Route = createFileRoute("/")({
   ]}), component: Index,
 });
 
-function Index() { return <PageFrame><Hero/><ToolTicker/><Story/><Solutions/><WorkflowCompare/><Audit/><Ways/><Finder/><FinalCTA/></PageFrame>; }
+function Index() { return <PageFrame><Hero/><ToolTicker/><Story/><Solutions/><WorkflowCompare/><Audit/><Pricing/><Finder/><FinalCTA/></PageFrame>; }
 
 const toolLogos = [
   ["Gmail", "/tool-logos/gmail.svg"], ["Trello", "/tool-logos/trello.svg"], ["Google Drive", "/tool-logos/google-drive.svg"],
@@ -28,7 +29,7 @@ const toolLogos = [
 ] as const;
 function ToolTicker(){return <section className="tool-ticker section-light" aria-label={`Agents that talk to your tools: ${toolLogos.map(([name])=>name).join(", ")}`}><p className="t-label ticker-label">Agents that talk to your tools</p><div className="ticker-window"><div className="ticker-track" aria-hidden="true">{[...toolLogos,...toolLogos].map(([name,src],i)=><span className="ticker-item" key={`${name}-${i}`}><img src={src} alt="" /></span>)}</div></div></section>}
 
-function Hero(){return <section className="home-hero section-light"><HeroRippleField/><div className="wrap hero-inner"><div><h1><span className="mark mark-yellow">AI Automation</span> that learns and adapts to your business.<br/>Deploy <span className="mark mark-coral">AI Agents</span> in your painstaking workflows 👉 GROWTH</h1><p className="hero-copy">We implement most advanced AI models into your existing processes.</p><p className="hero-points"><span>7 Day Builds.</span><span>Fixed Price, not an hourly rate.</span><span>Completely Custom</span></p><div className="hero-actions"><PrimaryLink to="/contact">TALK TO US</PrimaryLink><Link className="text-link" to="/" hash="solutions">See Solutions <ArrowRight size={15}/></Link></div></div></div></section>;}
+function Hero(){return <section className="home-hero section-light"><HeroRippleField/><div className="wrap hero-inner"><div><h1><span className="mark mark-yellow">AI Automation</span> that learns and adapts to your business.<br/>Deploy <span className="mark mark-coral">AI Agents</span> in your painstaking workflows 👉 GROWTH</h1><p className="hero-copy">We implement most advanced AI models into your existing processes.</p><p className="hero-points"><span>7–14 Day Builds.</span><span>Fixed Price, not an hourly rate.</span><span>Completely Custom</span></p><div className="hero-actions"><PrimaryLink to="/contact">TALK TO US</PrimaryLink><Link className="text-link" to="/" hash="solutions">See Solutions <ArrowRight size={15}/></Link></div></div></div></section>;}
 
 /**
  * Hero ASCII ripple field (OpenClaw-style).
@@ -225,7 +226,5 @@ const withAI=["Inquiry captured","AI qualifies the lead","Research gathered","CR
 function WorkflowCompare(){return <section className="compare section-dark"><div className="wrap"><div className="compare-heading"><div><Eyebrow>Before / after</Eyebrow><h2>What changes when AI handles the busywork?</h2></div><p>One new inquiry, two ways to handle it. The routine steps move faster; your team keeps the decision.</p></div><div className="compare-grid" aria-label="Comparison of a manual and AI-assisted lead workflow"><div className="compare-column compare-column--today"><header><span>01 / MANUAL</span><h3>Today</h3><p>Eight touches before follow-up.</p></header>{today.map((step,i)=><div className="compare-step" key={step}><span>{String(i+1).padStart(2,"0")}</span><b>{step}</b></div>)}</div><div className="compare-column compare-column--ai"><BorderBeam size={40} duration={5} colorFrom="#68a900" colorTo="#c3ef00" borderWidth={2}/><header><span>02 / AI-ASSISTED</span><h3>With AI</h3><p>Prepared automatically. Approved by a person.</p></header>{withAI.map((step,i)=><div className={`compare-step${i===5?" compare-step--human":""}`} key={step}><span>{String(i+1).padStart(2,"0")}</span><b>{step}</b>{i===5&&<em>Human decision</em>}</div>)}</div></div></div></section>}
 
 function Audit(){const rows=[["Lead follow-up","High","Low"],["Proposal creation","High","Medium"],["Internal knowledge","Medium","Low"],["Weekly reporting","Medium","Low"]];return <section className="audit section-light"><div className="wrap audit-grid"><div><SectionIntro eyebrow="Start smart" title="AI Opportunity Audit" copy="Find where time disappears, where customers wait, and which automation is most likely to create measurable value."/><PrimaryLink>Find my best AI opportunity</PrimaryLink></div><div className="audit-report"><header><img src="/logo.svg" alt=""/><div><b>Opportunity report</b><span>Priority map / 01</span></div></header><div className="audit-summary"><span><b>12</b> workflows reviewed</span><span><b>3</b> quick wins</span><span><b>18h</b> estimated weekly saving</span></div><div className="audit-table"><p><b>Opportunity</b><b>Value</b><b>Complexity</b></p>{rows.map(r=><p key={r[0]}><span>{r[0]}</span><span>{r[1]}</span><span>{r[2]}</span></p>)}</div><footer>Recommended tools · Priority · Value · Longer-term opportunities</footer></div></div></section>}
-
-function Ways(){const cards=[["AI Opportunity Audit","Find the opportunity","Best when you know AI could help but aren't sure where."],["AI Quick Win","Fastest way to begin","One clearly defined workflow solving one expensive or repetitive problem."],["Complete AI System","End-to-end improvement","Several connected workflows improving one complete business function."]];return <section className="ways section-dark"><div className="wrap"><SectionIntro dark eyebrow="Ways to work together" title="Start small. Expand when the value is clear."/><div className="way-grid">{cards.map((c,i)=><article className={i===1?"featured":""} key={c[0]}><p className="t-label">{c[0]}</p><h3>{c[1]}</h3><p>{c[2]}</p><Link to="/how-to-start">Learn more <ArrowRight size={14}/></Link></article>)}</div></div></section>}
 
 function Finder(){return <section id="finder" className="finder-section section-light"><div className="wrap"><SectionIntro eyebrow="Interactive tool" title="What should you automate first?" copy="Seven quick questions and one optional one. A practical opportunity map. No jargon required."/><OpportunityFinder/></div></section>}
