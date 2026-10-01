@@ -1,0 +1,171 @@
+.workflow-stepper {
+  position: relative;
+  z-index: 1;
+  --step-accent: var(--accent-primary);
+  --step-surface: var(--paper);
+}
+
+.workflow-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 156px;
+  height: 44px;
+  padding: 2px 18px 2px 4px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / .08);
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 550;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.workflow-status-pill canvas {
+  width: 40px !important;
+  height: 40px !important;
+  flex-shrink: 0;
+}
+
+.compare-column--ai .workflow-stepper {
+  --step-accent: #739a18;
+  --step-surface: #fbffd9;
+}
+
+.workflow-stepper__list {
+  margin: 0;
+  padding: 10px 0;
+  list-style: none;
+}
+
+.workflow-stepper__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 10px;
+  min-height: 48px;
+}
+
+/* Reserve a full connector segment for the alert, in both comparison columns. */
+.compare-column .workflow-stepper__step:first-child {
+  min-height: 72px;
+  padding-bottom: 24px;
+}
+
+.compare-column .workflow-stepper__step:first-child .workflow-stepper__rail::before {
+  bottom: -24px;
+}
+
+/* Match the manual row to the two-line human approval row. */
+.compare-column .workflow-stepper__step:nth-child(6) {
+  min-height: 64px;
+}
+
+.workflow-stepper__rail {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.workflow-stepper__rail::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: color-mix(in oklch, var(--step-accent), transparent 50%);
+}
+
+.workflow-stepper__step:first-child .workflow-stepper__rail::before { top: 50%; }
+.workflow-stepper__step:last-child .workflow-stepper__rail::before { bottom: 50%; }
+
+.workflow-stepper__marker {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border: 1.5px solid var(--step-accent);
+  border-radius: 50%;
+  background: var(--step-surface);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.workflow-stepper__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding-block: 10px;
+}
+
+.workflow-stepper__content b { display: block; font-size: 14px; font-weight: 560; line-height: 1.4; }
+.workflow-stepper__content small { display: block; margin-top: 3px; font-size: 12px; opacity: .65; }
+.workflow-stepper__content em {
+  padding: 5px 7px;
+  background: var(--accent-secondary);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.workflow-stepper__step--human {
+  margin-inline: -12px;
+  padding-inline: 12px;
+  background: color-mix(in oklch, var(--accent-secondary), transparent 48%);
+}
+
+.workflow-stepper__step--human .workflow-stepper__marker { background: var(--accent-secondary); }
+
+.workflow-stepper__step--completed .workflow-stepper__marker {
+  background: var(--step-accent);
+  color: white;
+}
+
+.workflow-stepper__step--completed .workflow-stepper__rail::before {
+  background: var(--step-accent);
+}
+
+.workflow-stepper__step--active .workflow-stepper__marker {
+  box-shadow: 0 0 0 4px color-mix(in oklch, var(--step-accent), transparent 80%);
+  border-width: 2px;
+}
+
+.workflow-stepper__blocked {
+  position: absolute;
+  left: 13px;
+  bottom: 12px;
+  z-index: 2;
+  transform: translate(-50%, 50%);
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--accent-primary);
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 0 0 3px var(--step-surface);
+}
+
+@media (max-width: 680px) {
+  .workflow-stepper__content b { font-size: 12px; }
+  .workflow-stepper__content em { font-size: 8px; }
+}
+
+@media (max-width: 380px) {
+  .compare-column .workflow-stepper__step:nth-child(6) { min-height: 80px; }
+  .workflow-stepper__step--human .workflow-stepper__content { grid-template-columns: 1fr; gap: 5px; }
+  .workflow-stepper__content em { justify-self: start; }
+}
