@@ -8,6 +8,9 @@ import { ThinkingOrb, type OrbState } from "@/components/ui/thinking-orbs";
 import { Eyebrow, FinalCTA, PageFrame, PrimaryLink, SectionIntro } from "@/components/site";
 import { SolutionTabs } from "@/components/solution-showcase";
 import { Pricing } from "@/components/ui/pricing-1";
+import { MorphingText } from "@/components/ui/morphing-text";
+
+const heroOutcomes = ["GROWTH", "EXPAND", "RETAIN", "DELIGHT", "SPEED"] as const;
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -31,7 +34,7 @@ const toolLogos = [
 ] as const;
 function ToolTicker(){return <section className="tool-ticker section-light" aria-label={`Agents that talk to your tools: ${toolLogos.map(([name])=>name).join(", ")}`}><p className="t-label ticker-label">Agents that talk to your tools</p><div className="ticker-window"><div className="ticker-track" aria-hidden="true">{[...toolLogos,...toolLogos].map(([name,src],i)=><span className="ticker-item" key={`${name}-${i}`}><img src={src} alt="" /></span>)}</div></div></section>}
 
-function Hero(){return <section className="home-hero section-light"><HeroRippleField/><div className="wrap hero-inner"><div><h1><span className="mark mark-yellow">AI Automation</span> that learns and adapts to your business.<br/>Deploy <span className="mark mark-coral">AI Agents</span> in your painstaking workflows 👉 GROWTH</h1><p className="hero-copy">We implement most advanced AI models into your existing processes.</p><p className="hero-points"><span>7–14 Day Builds.</span><span>Fixed Price, not an hourly rate.</span><span>Completely Custom</span></p><div className="hero-actions"><PrimaryLink to="/contact">TALK TO US</PrimaryLink><Link className="text-link" to="/" hash="solutions">See Solutions <ArrowRight size={15}/></Link></div></div></div></section>;}
+function Hero(){return <section className="home-hero section-light"><HeroRippleField/><div className="wrap hero-inner"><div><h1><span className="mark mark-yellow">AI Automation</span> that learns and adapts to your business.<br/>Deploy <span className="mark mark-coral">AI Agents</span> in your painstaking workflows <span className="hero-outcome">👉 <MorphingText texts={heroOutcomes}/></span></h1><p className="hero-copy">We implement most advanced AI models into your existing processes.</p><p className="hero-points"><span>7–14 Day Builds.</span><span>Fixed Price, not an hourly rate.</span><span>Completely Custom</span></p><div className="hero-actions"><PrimaryLink to="/contact">TALK TO US</PrimaryLink><Link className="text-link" to="/" hash="solutions">See Solutions <ArrowRight size={15}/></Link></div></div></div></section>;}
 
 /**
  * Hero ASCII ripple field (OpenClaw-style).
