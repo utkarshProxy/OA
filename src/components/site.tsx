@@ -25,8 +25,10 @@ export function SiteHeader() {
         </button>
         <div className={`nav-panel ${open ? "is-open" : ""}`}>
           <nav className="nav-links" aria-label="Primary navigation">
-            {navItems.map(([label, to]) => <Link key={to} to={to} activeProps={{ className: "is-active" }} onClick={() => setOpen(false)}>{label}</Link>)}
+            <Link to="/solutions" activeProps={{ className: "is-active" }} onClick={() => setOpen(false)}>Solutions</Link>
             <Link to="/" hash="pricing" onClick={() => setOpen(false)}>Pricing</Link>
+            <Link to="/tools" activeProps={{ className: "is-active" }} onClick={() => setOpen(false)}>Tools</Link>
+            <Link to="/how-to-start" activeProps={{ className: "is-active" }} onClick={() => setOpen(false)}>How to Start</Link>
           </nav>
           <Link to="/" hash="finder" className="nav-cta" onClick={() => setOpen(false)}>Find your best AI opportunity <ArrowUpRight size={14} /></Link>
         </div>

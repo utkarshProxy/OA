@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { ArrowRight, Bell, DollarSign, FileBarChart, Share2, Users } from "lucide-react";
 import { OpportunityFinder } from "@/components/opportunity-finder";
 import { GlowCard } from "@/components/ui/spotlight-card";
@@ -8,6 +8,7 @@ import { ThinkingOrb, type OrbState } from "@/components/ui/thinking-orbs";
 import { Eyebrow, FinalCTA, PageFrame, PrimaryLink, SectionIntro } from "@/components/site";
 import { SolutionTabs } from "@/components/solution-showcase";
 import { Pricing } from "@/components/ui/pricing-1";
+import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import { MorphingText } from "@/components/ui/morphing-text";
 
 const heroOutcomes = ["GROWTH", "EXPAND", "RETAIN", "DELIGHT", "SPEED"] as const;
@@ -34,183 +35,7 @@ const toolLogos = [
 ] as const;
 function ToolTicker(){return <section className="tool-ticker section-light" aria-label={`Agents that talk to your tools: ${toolLogos.map(([name])=>name).join(", ")}`}><p className="t-label ticker-label">Agents that talk to your tools</p><div className="ticker-window"><div className="ticker-track" aria-hidden="true">{[...toolLogos,...toolLogos].map(([name,src],i)=><span className="ticker-item" key={`${name}-${i}`}><img src={src} alt="" /></span>)}</div></div></section>}
 
-function Hero(){return <section className="home-hero section-light"><HeroRippleField/><div className="wrap hero-inner"><div><h1><span className="mark mark-yellow">AI Automation</span> that learns and adapts to your business.<br/>Deploy <span className="mark mark-coral">AI Agents</span> in your painstaking workflows <span className="hero-outcome">👉 <MorphingText texts={heroOutcomes}/></span></h1><p className="hero-copy">We implement most advanced AI models into your existing processes.</p><p className="hero-points"><span>7–14 Day Builds.</span><span>Fixed Price, not an hourly rate.</span><span>Completely Custom</span></p><div className="hero-actions"><PrimaryLink to="/contact">TALK TO US</PrimaryLink><Link className="text-link" to="/" hash="solutions">See Solutions <ArrowRight size={15}/></Link></div></div></div></section>;}
-
-/**
- * Hero ASCII ripple field (OpenClaw-style).
- *
- * Concentric elliptical rings of glyphs pulse outward from an origin point.
- * Rings are brightest at their crest and thin along the flanks, so they read
- * as arcs. Each ring takes one brand colour, and colours travel outward with
- * the rings. A faint dot lattice fills the rest of the hero.
- *
- * Desktop: rings radiate from the right. Mobile (<680px): bigger, bolder rings rise
- * from the bottom edge and climb behind the copy, dimmed over the text zone.
- * ~24fps, DPR capped at 1.5, paused off-screen / in hidden tabs, and a single
- * static frame under prefers-reduced-motion.
- */
-function HeroRippleField() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx) return;
-
-    const RAMP = " .:-=+xX#8@"; // light -> dense
-    const PALETTE = [
-      { rgb: "232,104,90", a: 1 }, // coral
-      { rgb: "17,17,19", a: 0.55 }, // ink, toned down
-      { rgb: "150,168,0", a: 1 }, // deep lime (brand lime is too pale on paper)
-      { rgb: "139,135,129", a: 0.9 }, // warm grey
-    ];
-    const DOT = "17,17,19";
-    const FRAME_MS = 42;
-    const STATIC_T = 6;
-    const DESKTOP_ORIGIN = { x: 0.74, y: 0.2, sx: 1, sy: 0.55 };
-    const MOBILE_ORIGIN = { x: 0.5, y: 1.02, sx: 1, sy: 0.75 };
-
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let animationFrame: number | null = null;
-    let width = 0;
-    let height = 0;
-    let lastFrame = 0;
-    let isVisible = true;
-    const t0 = performance.now();
-
-    const resize = () => {
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      width = rect.width;
-      height = rect.height;
-      canvas.width = Math.round(width * dpr);
-      canvas.height = Math.round(height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-
-    const draw = (t: number) => {
-      ctx.clearRect(0, 0, width, height);
-      const compact = width < 680;
-      const cellW = compact ? 7 : 7.2;
-      const cellH = 11.5;
-      const cols = Math.ceil(width / cellW) + 1;
-      const rows = Math.ceil(height / cellH) + 1;
-      ctx.font = `600 ${compact ? 10.5 : 10}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-
-      const o = compact ? MOBILE_ORIGIN : DESKTOP_ORIGIN;
-      const ox = o.x * width;
-      const oy = o.y * height;
-      const scale = compact ? height * 1.15 : Math.max(width, height * 1.4);
-      const spacing = compact ? 0.07 : 0.085; // distance between rings
-      const thick = compact ? 0.0065 : 0.008; // ring half-thickness at the origin
-      const grow = compact ? 1.9 : 1.4; // rings thicken by this factor as they travel
-      const speed = 0.018; // outward drift per second
-      const inner = 0.07; // calm hole around the origin
-      const reach = compact ? 0.8 : 0.62; // rings fade out past this
-
-      for (let r = 0; r < rows; r += 1) {
-        for (let c = 0; c < cols; c += 1) {
-          const x = c * cellW + cellW / 2;
-          const y = r * cellH + cellH / 2;
-          const dx = (x - ox) / scale / o.sx;
-          const dy = ((y - oy) / scale / o.sy) * 0.55;
-          const d = Math.sqrt(dx * dx + dy * dy);
-
-          let v = 0;
-          let tone = PALETTE[0]!;
-          if (d > inner && d < reach) {
-            const p = (d - t * speed) / spacing;
-            const f = p - Math.floor(p);
-            const off = Math.min(f, 1 - f) * spacing;
-            // Like a real ripple: the further a ring travels, the wider its band.
-            const prog = Math.min(1, (d - inner) / (reach - inner));
-            const band = thick * (1 + grow * prog);
-            const ring = Math.exp(-(off * off) / (2 * band * band));
-            const ang = Math.atan2(y - oy, x - ox);
-            const crest = 0.22 + 0.78 * Math.pow(Math.abs(Math.sin(ang)), 1.4);
-            const shimmer = 0.75 + 0.25 * Math.sin(c * 0.9 + r * 1.7 + t * 1.3);
-            const fadeIn = Math.min(1, (d - inner) / 0.06);
-            // Mobile keeps rings strong until the very top; desktop fades them early.
-            const fadeOut = Math.max(0, 1 - Math.pow(prog, compact ? 4 : 1.6));
-            v = ring * crest * shimmer * fadeIn * fadeOut;
-            const n = PALETTE.length;
-            tone = PALETTE[((Math.round(p) % n) + n) % n] ?? tone;
-          }
-
-          // Mobile: rings climb to the top, dimmed over the headline and copy
-          // but full strength around the buttons and in the space above the headline.
-          const yn = y / height;
-          const below = Math.min(1, Math.max(0, (yn - 0.74) / 0.1)); // around the buttons
-          const above = Math.min(1, Math.max(0, (0.13 - yn) / 0.07)); // open space above the headline
-          const zone = compact ? 0.45 + 0.55 * Math.max(below, above) : 1;
-          v *= zone;
-
-          if (v > 0.06) {
-            const idx = Math.min(RAMP.length - 1, 1 + Math.floor(v * (RAMP.length - 1)));
-            const base = compact ? 0.5 + v * 0.5 : 0.3 + v * 0.7;
-            ctx.fillStyle = `rgba(${tone.rgb},${(base * tone.a * (compact ? zone : 1)).toFixed(3)})`;
-            ctx.fillText(RAMP.charAt(idx), x, y);
-          } else if (c % 6 === 0 && r % 3 === 0) {
-            ctx.fillStyle = `rgba(${DOT},${compact ? 0.16 : 0.13})`;
-            ctx.fillText("\u00b7", x, y);
-          }
-        }
-      }
-    };
-
-    const currentT = () => (motionQuery.matches ? STATIC_T : STATIC_T + (performance.now() - t0) / 1000);
-
-    const stop = () => {
-      if (animationFrame !== null) cancelAnimationFrame(animationFrame);
-      animationFrame = null;
-    };
-    const animate = (time: number) => {
-      animationFrame = null;
-      if (!isVisible || document.hidden || motionQuery.matches) return;
-      if (time - lastFrame >= FRAME_MS) {
-        lastFrame = time;
-        draw(currentT());
-      }
-      animationFrame = requestAnimationFrame(animate);
-    };
-    const startAnimation = () => {
-      if (animationFrame === null && isVisible && !document.hidden && !motionQuery.matches) {
-        animationFrame = requestAnimationFrame(animate);
-      }
-    };
-    const redraw = () => {
-      resize();
-      draw(currentT());
-      startAnimation();
-    };
-    const onVisibilityChange = () => (document.hidden ? stop() : startAnimation());
-    const observer = new IntersectionObserver((entries) => {
-      const entry = entries[0];
-      if (!entry) return;
-      isVisible = entry.isIntersecting;
-      if (isVisible) startAnimation(); else stop();
-    });
-    const resizeObserver = new ResizeObserver(redraw);
-
-    redraw();
-    observer.observe(canvas);
-    resizeObserver.observe(canvas);
-    document.addEventListener("visibilitychange", onVisibilityChange);
-    motionQuery.addEventListener("change", redraw);
-
-    return () => {
-      stop();
-      observer.disconnect();
-      resizeObserver.disconnect();
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      motionQuery.removeEventListener("change", redraw);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="hero-ripple-field" aria-hidden="true" />;
-}
+function Hero(){return <section className="home-hero section-light"><FlickeringGrid className="hero-flickering-grid" squareSize={4} gridGap={7.2} color="#3B82F6" maxOpacity={0.6} flickerChance={0.1}/><div className="wrap hero-inner"><div><h1><span className="mark mark-yellow">AI Automation</span> that learns and adapts to your business.<br/>Deploy <span className="mark mark-coral">AI Agents</span> in your painstaking workflows <span className="hero-outcome">👉 <MorphingText texts={heroOutcomes}/></span></h1><p className="hero-copy">We implement most advanced AI models into your existing processes.</p><p className="hero-points"><span>7–14 Day Builds.</span><span>Fixed Price, not an hourly rate.</span><span>Completely Custom</span></p><div className="hero-actions"><PrimaryLink to="/contact">TALK TO US</PrimaryLink><Link className="text-link" to="/" hash="solutions">See Solutions <ArrowRight size={15}/></Link></div></div></div></section>;}
 
 const automationTasks = [
   { title: "AI-powered notifications", subtitle: "Smart alerts for critical events", icon: Bell },
