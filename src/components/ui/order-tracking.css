@@ -47,13 +47,13 @@
   min-height: 48px;
 }
 
-/* Reserve a full connector segment for the alert, in both comparison columns. */
-.compare-column .workflow-stepper__step:first-child {
+/* Reserve extra room only for steps that show a blocking alert. */
+.compare-column .workflow-stepper__step--blocked {
   min-height: 72px;
   padding-bottom: 24px;
 }
 
-.compare-column .workflow-stepper__step:first-child .workflow-stepper__rail::before {
+.compare-column .workflow-stepper__step--blocked .workflow-stepper__rail::before {
   bottom: -24px;
 }
 
@@ -73,7 +73,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 1.5px;
+  width: 3px;
   background: color-mix(in oklch, var(--step-accent), transparent 50%);
 }
 
@@ -93,6 +93,7 @@
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 700;
+  transition: background-color 280ms ease, color 280ms ease, box-shadow 280ms ease;
 }
 
 .workflow-stepper__content {
@@ -168,4 +169,15 @@
   .compare-column .workflow-stepper__step:nth-child(6) { min-height: 80px; }
   .workflow-stepper__step--human .workflow-stepper__content { grid-template-columns: 1fr; gap: 5px; }
   .workflow-stepper__content em { justify-self: start; }
+}
+
+.workflow-stepper__check { width: 13px; height: 13px; overflow: visible; }
+.workflow-stepper__check path { stroke-dasharray: 1; stroke-dashoffset: 0; animation: workflow-check-draw 420ms cubic-bezier(.22, 1, .36, 1) both; }
+@keyframes workflow-check-draw {
+  from { stroke-dashoffset: 1; opacity: 0; }
+  to { stroke-dashoffset: 0; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workflow-stepper__marker { transition: none; }
+  .workflow-stepper__check path { animation: none; }
 }

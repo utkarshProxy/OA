@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import "./order-tracking.css";
 
@@ -62,7 +61,7 @@ const OrderTracking = React.forwardRef<HTMLDivElement, OrderTrackingProps>(
             return <li className={cn("workflow-stepper__step", step.annotation && "workflow-stepper__step--human", completed && "workflow-stepper__step--completed", active && "workflow-stepper__step--active", step.blockedAfter && "workflow-stepper__step--blocked")} aria-current={active ? "step" : undefined} key={step.name}>
               <span className="workflow-stepper__rail" aria-hidden="true">
                 <span className="workflow-stepper__marker">
-                  {completed ? <Check size={13} /> : index + 1}
+                  {completed ? <svg className="workflow-stepper__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6" pathLength={1} /></svg> : index + 1}
                 </span>
               </span>
               {step.blockedAfter && index < steps.length - 1 && <span className="workflow-stepper__blocked" role="img" aria-label="Workflow stuck before the next step" title="Workflow stuck before the next step">!</span>}

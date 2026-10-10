@@ -1,0 +1,53 @@
+@font-face {
+  font-family: "Caveat";
+  src: url("/assets/fonts/caveat-600.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+.manual-paper {
+  position: relative;
+  align-self: stretch;
+  margin: 5px 3px;
+  padding: 28px 22px 24px 36px;
+  color: #243449;
+  background: #fff9e9;
+  background-image: linear-gradient(90deg, transparent 25px, #e8aaa870 25px, #e8aaa870 26px, transparent 26px);
+  border: 1px solid #e3d9be;
+  border-radius: 2px 5px 3px 1px;
+  box-shadow: 3px 5px 0 #e8dfce, 6px 9px 0 #d6cdbc, 0 18px 32px #0005;
+  transform: rotate(-1.3deg);
+  font-family: "Caveat", "Segoe Print", cursive;
+  font-weight: 600;
+}
+.manual-paper__tape {
+  position: absolute;
+  top: -12px;
+  left: 35%;
+  width: 94px;
+  height: 26px;
+  background: #dfcf9dcc;
+  border-inline: 1px dashed #c6b784;
+  transform: rotate(4deg);
+  box-shadow: 0 2px 3px #0001;
+}
+.manual-paper__label { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: #706b5f; }
+.manual-paper header h3 { margin: 10px 0 0; font: 600 43px/1 "Caveat", cursive; }
+.manual-paper header p { margin: 5px 0 18px; font-size: 23px; color: #777164; }
+.manual-paper__tasks { margin: 0; padding: 0; list-style: none; }
+.manual-paper__tasks li { min-height: 54px; display: flex; align-items: center; gap: 11px; padding-block: 9px; border-bottom: 1px solid #a4b6c536; font-size: 25px; line-height: 1.15; }
+.manual-paper__tasks li:nth-child(2n) { transform: rotate(.5deg); }
+.manual-paper__checkbox { flex: 0 0 17px; width: 17px; height: 18px; border: 1.5px solid #53667b; border-radius: 2px 1px 3px 1px; transform: rotate(-5deg); line-height: 12px; font-size: 28px; }
+.manual-paper__task { position: relative; display: inline-block; }
+.manual-paper__task del { text-decoration: none; }
+.manual-paper__tasks .is-done { color: #7d807b; }
+.manual-paper__strike, .manual-paper__underline { position: absolute; left: -3px; width: calc(100% + 6px); pointer-events: none; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.manual-paper__strike { top: 34%; height: 16px; stroke: #455a6d; stroke-width: 1.8; }
+.manual-paper__underline { bottom: -9px; height: 16px; stroke: #cf6347; stroke-width: 2.1; }
+.manual-paper__questions { display: inline-block; margin-left: 9px; color: #cf6347; font-size: 32px; transform: rotate(9deg); }
+.manual-paper__note { margin: 22px 0 0; text-align: right; color: #cf6347; font-size: 24px; transform: rotate(-3deg); }
+@media (max-width: 680px) {
+  .manual-paper { margin: 12px 6px 15px; padding-right: 20px; }
+  .manual-paper__tasks li { font-size: 26px; }
+}

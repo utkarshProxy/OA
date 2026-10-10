@@ -105,7 +105,7 @@ p, h1, h2, h3 { margin-top: 0; }
 
 /* Soft paper wash keeps the decorative grid behind the headline. */
 .hero-inner > div { position: relative; }
-.hero-inner > div::before { content: ""; position: absolute; z-index: -1; inset: -6% -3% -8% -4%; background: radial-gradient(ellipse at 38% 55%, var(--paper) 0%, color-mix(in oklab, var(--paper) 88%, transparent) 55%, transparent 82%); filter: blur(22px); pointer-events: none; }
+.hero-inner > div::before { content: ""; position: absolute; z-index: -1; inset: -6% -3% -8% -4%; background: radial-gradient(ellipse at 38% 55%, color-mix(in oklab, var(--paper) 72%, transparent) 0%, color-mix(in oklab, var(--paper) 48%, transparent) 55%, transparent 82%); filter: blur(22px); pointer-events: none; }
 .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr; align-items: end; gap: 0; min-height: min(780px, calc(100vh - 74px)); padding-block: 92px 78px; }
 .home-hero h1 { max-width: 1200px; margin: 28px 0 30px; font-size: clamp(38px, 4.6vw, 70px); font-weight: 650; line-height: .98; }
 .morphing-text { display: inline-block; position: relative; vertical-align: baseline; white-space: nowrap; }
@@ -414,7 +414,7 @@ p, h1, h2, h3 { margin-top: 0; }
 
 @media (max-width: 680px) {
   /* Subtle paper wash behind the mobile headline. */
-  .hero-inner > div::before { background: radial-gradient(ellipse at 40% 50%, color-mix(in oklab, var(--paper) 55%, transparent) 0%, transparent 75%); filter: blur(18px); }
+  .hero-inner > div::before { background: radial-gradient(ellipse at 40% 50%, color-mix(in oklab, var(--paper) 45%, transparent) 0%, transparent 75%); filter: blur(18px); }
   .wrap { width: min(100% - 32px, 1240px); }
   .brand { font-size: 14px; }
   .home-solutions, .audit, .process, .solution-detail-list, .work-list, .human-loop, .tool-library, .contact-section, .compare, .ways, .offers, .finder-section, .manifesto { padding-block: 78px; }
@@ -509,4 +509,16 @@ p, h1, h2, h3 { margin-top: 0; }
   .automation-track > div[aria-hidden="true"] { display: none; }
 }
 
-.home-hero > .hero-flickering-grid { position: absolute; inset: 0; z-index: 0; pointer-events: none; mask-image: radial-gradient(450px circle at center, white, transparent); }
+.home-hero > .hero-flickering-grid { position: absolute; inset: 0; z-index: 0; pointer-events: none; mask-image: radial-gradient(ellipse at center, white 25%, transparent 85%); }
+
+/* On stacked layouts, introduce the workflow before showing its graphic. */
+@media (max-width: 980px) {
+  .automation-showcase { display: flex; flex-direction: column; align-items: stretch; gap: 32px; }
+  .automation-copy { display: contents; }
+  .automation-copy .eyebrow { order: 0; margin-bottom: 0; }
+  .automation-copy h2 { order: 1; }
+  .automation-demo { order: 2; margin-top: 14px; margin-bottom: 14px; }
+  .automation-copy > p { order: 3; margin-top: 0; }
+  .automation-tags { order: 4; }
+  .automation-proof { order: 5; }
+}
