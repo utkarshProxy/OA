@@ -46,8 +46,8 @@ const plans: PricingPlan[] = [
     kicker: "Fixed price / one deployment",
     title: "Single Workflow Automation",
     description: "One clearly defined workflow that solves an expensive or repetitive problem in your business. Includes a free automation audit and roadmap.",
-    price: "$1,499",
-    period: "per deployment*",
+    price: "$1,499*",
+    period: "per deployment",
     features: [
       "One focused workflow or problem",
       "Fixed scope: design, build, integrations, testing, and documentation",
@@ -59,7 +59,7 @@ const plans: PricingPlan[] = [
       "Deployed in your accounts, yours to own",
       "Complete workflow documentation and diagram",
     ],
-    costNote: "*AI tool subscriptions, cloud hosting, API usage, and AI tokens are paid separately by the client.",
+    costNote: "*AI tool subscriptions, cloud hosting, and API and AI token usage are billed separately by the providers and paid directly by you. Costs vary depending on the tools, providers, and usage.",
     action: "Talk to us",
   },
 ];
@@ -137,7 +137,9 @@ export function Pricing() {
               </div>
 
               <div className="pricing-price">
-                <strong>{plan.price}</strong>
+                {plan.kind === "custom" ? (
+                  <Link to="/contact" className="pricing-price-link">{plan.price}</Link>
+                ) : <strong>{plan.price}</strong>}
                 <span>{plan.period}</span>
               </div>
 
@@ -149,7 +151,7 @@ export function Pricing() {
                 ))}
               </ul>
 
-              {plan.costNote && <p className="pricing-cost-note">{plan.costNote}</p>}
+              {plan.costNote && <p className="pricing-cost-note"><strong>{plan.costNote}</strong></p>}
               <Link to="/contact" className="pricing-button">{plan.action} <span aria-hidden="true">↗</span></Link>
             </article>
           ))}
