@@ -17,6 +17,10 @@ import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as WorkRouteImport } from './routes/work'
 import { Route as SolutionsIndexRouteImport } from './routes/solutions/index'
 import { Route as SolutionsSlugRouteImport } from './routes/solutions/$slug'
+import { Route as SolutionsMarketingIndexRouteImport } from './routes/solutions/marketing/index'
+import { Route as SolutionsMarketingAiSearchRouteImport } from './routes/solutions/marketing/ai-search'
+import { Route as SolutionsMarketingContentRouteImport } from './routes/solutions/marketing/content'
+import { Route as SolutionsMarketingConversionRouteImport } from './routes/solutions/marketing/conversion'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +62,29 @@ const SolutionsSlugRoute = SolutionsSlugRouteImport.update({
   path: '/solutions/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SolutionsMarketingIndexRoute = SolutionsMarketingIndexRouteImport.update({
+  id: '/solutions/marketing/',
+  path: '/solutions/marketing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolutionsMarketingAiSearchRoute =
+  SolutionsMarketingAiSearchRouteImport.update({
+    id: '/solutions/marketing/ai-search',
+    path: '/solutions/marketing/ai-search',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SolutionsMarketingContentRoute =
+  SolutionsMarketingContentRouteImport.update({
+    id: '/solutions/marketing/content',
+    path: '/solutions/marketing/content',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SolutionsMarketingConversionRoute =
+  SolutionsMarketingConversionRouteImport.update({
+    id: '/solutions/marketing/conversion',
+    path: '/solutions/marketing/conversion',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +95,10 @@ export interface FileRoutesByFullPath {
   '/work': typeof WorkRoute
   '/solutions/$slug': typeof SolutionsSlugRoute
   '/solutions/': typeof SolutionsIndexRoute
+  '/solutions/marketing/ai-search': typeof SolutionsMarketingAiSearchRoute
+  '/solutions/marketing/content': typeof SolutionsMarketingContentRoute
+  '/solutions/marketing/conversion': typeof SolutionsMarketingConversionRoute
+  '/solutions/marketing/': typeof SolutionsMarketingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +109,10 @@ export interface FileRoutesByTo {
   '/work': typeof WorkRoute
   '/solutions/$slug': typeof SolutionsSlugRoute
   '/solutions': typeof SolutionsIndexRoute
+  '/solutions/marketing/ai-search': typeof SolutionsMarketingAiSearchRoute
+  '/solutions/marketing/content': typeof SolutionsMarketingContentRoute
+  '/solutions/marketing/conversion': typeof SolutionsMarketingConversionRoute
+  '/solutions/marketing': typeof SolutionsMarketingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +124,10 @@ export interface FileRoutesById {
   '/work': typeof WorkRoute
   '/solutions/$slug': typeof SolutionsSlugRoute
   '/solutions/': typeof SolutionsIndexRoute
+  '/solutions/marketing/ai-search': typeof SolutionsMarketingAiSearchRoute
+  '/solutions/marketing/content': typeof SolutionsMarketingContentRoute
+  '/solutions/marketing/conversion': typeof SolutionsMarketingConversionRoute
+  '/solutions/marketing/': typeof SolutionsMarketingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +140,10 @@ export interface FileRouteTypes {
     | '/work'
     | '/solutions/$slug'
     | '/solutions/'
+    | '/solutions/marketing/ai-search'
+    | '/solutions/marketing/content'
+    | '/solutions/marketing/conversion'
+    | '/solutions/marketing/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +154,10 @@ export interface FileRouteTypes {
     | '/work'
     | '/solutions/$slug'
     | '/solutions'
+    | '/solutions/marketing/ai-search'
+    | '/solutions/marketing/content'
+    | '/solutions/marketing/conversion'
+    | '/solutions/marketing'
   id:
     | '__root__'
     | '/'
@@ -121,6 +168,10 @@ export interface FileRouteTypes {
     | '/work'
     | '/solutions/$slug'
     | '/solutions/'
+    | '/solutions/marketing/ai-search'
+    | '/solutions/marketing/content'
+    | '/solutions/marketing/conversion'
+    | '/solutions/marketing/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +183,10 @@ export interface RootRouteChildren {
   WorkRoute: typeof WorkRoute
   SolutionsSlugRoute: typeof SolutionsSlugRoute
   SolutionsIndexRoute: typeof SolutionsIndexRoute
+  SolutionsMarketingAiSearchRoute: typeof SolutionsMarketingAiSearchRoute
+  SolutionsMarketingContentRoute: typeof SolutionsMarketingContentRoute
+  SolutionsMarketingConversionRoute: typeof SolutionsMarketingConversionRoute
+  SolutionsMarketingIndexRoute: typeof SolutionsMarketingIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +247,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/solutions/marketing/': {
+      id: '/solutions/marketing/'
+      path: '/solutions/marketing'
+      fullPath: '/solutions/marketing/'
+      preLoaderRoute: typeof SolutionsMarketingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solutions/marketing/ai-search': {
+      id: '/solutions/marketing/ai-search'
+      path: '/solutions/marketing/ai-search'
+      fullPath: '/solutions/marketing/ai-search'
+      preLoaderRoute: typeof SolutionsMarketingAiSearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solutions/marketing/content': {
+      id: '/solutions/marketing/content'
+      path: '/solutions/marketing/content'
+      fullPath: '/solutions/marketing/content'
+      preLoaderRoute: typeof SolutionsMarketingContentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solutions/marketing/conversion': {
+      id: '/solutions/marketing/conversion'
+      path: '/solutions/marketing/conversion'
+      fullPath: '/solutions/marketing/conversion'
+      preLoaderRoute: typeof SolutionsMarketingConversionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -204,6 +287,10 @@ const rootRouteChildren: RootRouteChildren = {
   WorkRoute: WorkRoute,
   SolutionsSlugRoute: SolutionsSlugRoute,
   SolutionsIndexRoute: SolutionsIndexRoute,
+  SolutionsMarketingAiSearchRoute: SolutionsMarketingAiSearchRoute,
+  SolutionsMarketingContentRoute: SolutionsMarketingContentRoute,
+  SolutionsMarketingConversionRoute: SolutionsMarketingConversionRoute,
+  SolutionsMarketingIndexRoute: SolutionsMarketingIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

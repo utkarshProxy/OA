@@ -277,7 +277,8 @@
 }
 .wave-bar {
   width: 4px;
-  height: calc(11px + (var(--i) % 5) * 6px);
+  height: var(--wave-height, 24px);
+  flex: 0 0 4px;
   background: var(--accent-primary);
   transform-origin: center;
   animation: obo-wave 0.78s ease-in-out infinite alternate;

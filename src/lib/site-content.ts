@@ -64,7 +64,7 @@ export type Solution = {
   };
 };
 
-export const solutions = [
+const solutionDefinitions = [
   {
     number: "01",
     slug: "operations",
@@ -919,6 +919,32 @@ export const solutions = [
     },
   },
 ] as const satisfies readonly Solution[];
+
+export const contentMultiplier = solutionDefinitions.find((solution) => solution.slug === "marketing")!;
+
+export const solutions: readonly Solution[] = solutionDefinitions.map((solution) => solution.slug !== "marketing" ? solution : {
+  ...solution,
+  subtitle: "Visibility · Conversion · Content",
+  title: "Get found. Get chosen. Stay visible.",
+  headline: { before: "Get found. Get chosen. ", mark: "Stay visible." },
+  summary: "Improve your visibility in AI search, turn website visits into enquiries, and put your expertise to work across every channel.",
+  lede: "Improve your visibility in AI search, turn website visits into enquiries, and put your expertise to work across every channel.",
+  features: [
+    { icon: "Sparkles", title: "AI Search Visibility", text: "Help customers discover your expertise in AI answers." },
+    { icon: "ListChecks", title: "Conversion Optimisation", text: "Make the path from a visit to an enquiry easier." },
+    { icon: "AudioLines", title: "Content Multiplier", text: "Turn one conversation into useful content for every channel." },
+  ],
+  systems: ["AI Search Visibility", "Conversion Optimisation", "Content Multiplier"],
+  flow: ["Get found", "Get chosen", "Stay visible"],
+  demo: {
+    kind: "outputs", icon: "Sparkles", title: "Your marketing, connected", sublabel: "Three ways to grow",
+    rows: [
+      { title: "01 / AI Search Visibility", detail: "Get found in relevant AI answers" },
+      { title: "02 / Conversion Optimisation", detail: "Turn more visits into enquiries", tone: "accent" },
+      { title: "03 / Content Multiplier", detail: "Keep your expertise visible" },
+    ], footer: "Start with the bottleneck. Build from there.",
+  },
+});
 
 export function getSolution(slug: string) {
   return solutions.find((solution) => solution.slug === slug);

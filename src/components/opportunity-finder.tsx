@@ -111,7 +111,7 @@ const FINDER_CONFIG = {
   tieBreak: ["sales", "operations", "marketing", "knowledge"] as SolutionSlug[],
   solutions: {
     sales: { title: "Never Miss a Lead", reason: "Enquiries wait and follow-ups depend on memory. An AI receptionist and follow-up agent answer calls and DMs in seconds and chase every quote, then bring customers back for the next visit." },
-    marketing: { title: "Content Multiplier", reason: "Posting is patchy. Turn one voice note, job photo or client win into a week of posts." },
+    marketing: { title: "Marketing", reason: "Find your next opportunity across AI search visibility, website conversion, and consistent content." },
     operations: { title: "Back Office on Autopilot", reason: "Claims, forms and data entry are eating your week. Extract, file and chase automatically; anything unusual comes to you." },
     knowledge: { title: "Ask Your Business", reason: "Know-how lives in people's heads and WhatsApp threads. Give the team one place to get reliable answers." },
   },
@@ -300,7 +300,7 @@ function FinderResults({ answers, details, onReset }: { answers: Answers; detail
     {business && <p className="finder-audit-context">Your audit: {business}{teamSizeCode === "D" && details.teamSize ? ` · ${details.teamSize} people` : ""}</p>}
     <div className="result-table">{recommendations.map(({ slug, title, reason, score }, index) => <div className="result-row" key={slug}>
       <span>{String(index + 1).padStart(2, "0")}</span>
-      <strong>{slug === "custom" ? <Link to="/contact">{title}</Link> : <Link to="/solutions" hash={slug}>{title}</Link>}</strong>
+      <strong>{slug === "custom" ? <Link to="/contact">{title}</Link> : <Link to="/solutions/$slug" params={{ slug }}>{title}</Link>}</strong>
       <span>{FINDER_CONFIG.copy.impact} <b>{score >= 4 ? FINDER_CONFIG.copy.impactHigh : score >= 2 ? FINDER_CONFIG.copy.impactMedium : FINDER_CONFIG.copy.customImpact}</b></span>
       <span>{FINDER_CONFIG.copy.complexity} <b>{getOptionCode("operations", answers.operations) === "A" || getOptionCode("operations", answers.operations) === "B" ? FINDER_CONFIG.copy.complexityLow : FINDER_CONFIG.copy.complexityMedium}</b></span>
       <p className="result-reason">{reason}</p>

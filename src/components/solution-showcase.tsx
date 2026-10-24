@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { HomeMarketingTabs } from "@/components/home-marketing-tabs";
 import {
   ArrowLeftRight,
   ArrowRight,
@@ -59,7 +60,11 @@ export function VoiceWaveform() {
   return (
     <div className="voice-wave" aria-hidden="true">
       {Array.from({ length: 16 }, (_, i) => (
-        <span className="wave-bar" style={{ "--i": i } as CSSProperties} key={i} />
+        <span
+          className="wave-bar"
+          style={{ "--i": i, "--wave-height": `${11 + (i % 5) * 6}px` } as CSSProperties}
+          key={i}
+        />
       ))}
     </div>
   );
@@ -143,36 +148,40 @@ export function SolutionTabs() {
       </TabsList>
       {solutions.map((solution) => (
         <TabsContent value={solution.slug} className="solution-tab-content" key={solution.slug}>
-          <article className="solution-panel">
-            <div className="solution-panel-intro">
-              <p className="t-label">
-                {solution.number} / {solution.label}
-              </p>
-              <h3>
-                <MarkedTitle heading={solution.headline} />
-              </h3>
-              <p>{solution.lede}</p>
-            </div>
-            <SolutionDemo solution={solution} />
-            <div className="solution-feature-list">
-              {solution.features.map((feature) => (
-                <div className="solution-feature" key={feature.title}>
-                  <FeatureIcon name={feature.icon} title={feature.title} />
-                  <div>
-                    <b>{feature.title}</b>
-                    <p>{feature.text}</p>
+          {solution.slug === "marketing" ? (
+            <HomeMarketingTabs />
+          ) : (
+            <article className="solution-panel">
+              <div className="solution-panel-intro">
+                <p className="t-label">
+                  {solution.number} / {solution.label}
+                </p>
+                <h3>
+                  <MarkedTitle heading={solution.headline} />
+                </h3>
+                <p>{solution.lede}</p>
+              </div>
+              <SolutionDemo solution={solution} />
+              <div className="solution-feature-list">
+                {solution.features.map((feature) => (
+                  <div className="solution-feature" key={feature.title}>
+                    <FeatureIcon name={feature.icon} title={feature.title} />
+                    <div>
+                      <b>{feature.title}</b>
+                      <p>{feature.text}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-            <Link
-              className="btn btn-primary solution-panel-cta"
-              to="/solutions/$slug"
-              params={{ slug: solution.slug }}
-            >
-              Explore {solution.label} <ArrowRight size={15} aria-hidden="true" />
-            </Link>
-          </article>
+                ))}
+              </div>
+              <Link
+                className="btn btn-primary solution-panel-cta"
+                to="/solutions/$slug"
+                params={{ slug: solution.slug }}
+              >
+                Explore {solution.label} <ArrowRight size={15} aria-hidden="true" />
+              </Link>
+            </article>
+          )}
         </TabsContent>
       ))}
     </Tabs>
