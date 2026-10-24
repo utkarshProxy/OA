@@ -35,7 +35,7 @@ function SolutionsPage() {
                 </p>
                 <h2>{solution.title}</h2>
                 <p>{solution.summary}</p>
-                <Link className="text-link" to="/solutions/$slug" params={{ slug: solution.slug }}>
+                <Link className="text-link" to={solution.slug === "marketing" ? "/solutions/marketing" : "/solutions/$slug"} params={{ slug: solution.slug }}>
                   Explore this system <ArrowRight size={14} aria-hidden="true" />
                 </Link>
               </div>

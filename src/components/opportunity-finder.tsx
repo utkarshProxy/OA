@@ -300,7 +300,7 @@ function FinderResults({ answers, details, onReset }: { answers: Answers; detail
     {business && <p className="finder-audit-context">Your audit: {business}{teamSizeCode === "D" && details.teamSize ? ` · ${details.teamSize} people` : ""}</p>}
     <div className="result-table">{recommendations.map(({ slug, title, reason, score }, index) => <div className="result-row" key={slug}>
       <span>{String(index + 1).padStart(2, "0")}</span>
-      <strong>{slug === "custom" ? <Link to="/contact">{title}</Link> : <Link to="/solutions/$slug" params={{ slug }}>{title}</Link>}</strong>
+      <strong>{slug === "custom" ? <Link to="/contact">{title}</Link> : <Link to={slug === "marketing" ? "/solutions/marketing" : "/solutions/$slug"} params={{ slug }}>{title}</Link>}</strong>
       <span>{FINDER_CONFIG.copy.impact} <b>{score >= 4 ? FINDER_CONFIG.copy.impactHigh : score >= 2 ? FINDER_CONFIG.copy.impactMedium : FINDER_CONFIG.copy.customImpact}</b></span>
       <span>{FINDER_CONFIG.copy.complexity} <b>{getOptionCode("operations", answers.operations) === "A" || getOptionCode("operations", answers.operations) === "B" ? FINDER_CONFIG.copy.complexityLow : FINDER_CONFIG.copy.complexityMedium}</b></span>
       <p className="result-reason">{reason}</p>
